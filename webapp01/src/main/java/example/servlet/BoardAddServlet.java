@@ -2,8 +2,6 @@ package example.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -18,8 +16,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import example.dao.BoardDao;
 import example.vo.Board;
 
-@WebServlet("/board/list.do")
-public class BoardListServlet extends GenericServlet {
+@WebServlet("/board/add.do")
+public class BoardAddServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
   ApplicationContext iocContainer ;
@@ -27,52 +25,45 @@ public class BoardListServlet extends GenericServlet {
   
   @Override
   public void init(ServletConfig config) throws ServletException {
-    super.init(config); // 원래 GenericServlet 만든 메서드를 그대로 실행한다.
-    //그리고 다음 작업을 추가한다.
+    super.init(config); 
     iocContainer = new ClassPathXmlApplicationContext(
         "conf/application-context.xml");
-    
-    //스프링 IoC 컨테이너에 보관된 BoardDao 구현체를 꺼낸다.
     boardDao = iocContainer.getBean(BoardDao.class);
   }
   
   @Override
   public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    int pageNo = 1;
-    int length = 5;
+    // 클라이언트가 보내는 데이터는 UTF-8로 되어 있으니,
+    // Unicode로 잘 변환하여 값을 리턴하라!
+    request.setCharacterEncoding("UTF-8");
     
-    if (request.getParameter("pageNo") != null) {
-      pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    }
+    Board board = new Board();
+    board.setPassword(request.getParameter("password"));
+    board.setTitle(request.getParameter("title"));
+    board.setContents(request.getParameter("contents"));
     
-    if (request.getParameter("length") != null) {
-      length = Integer.parseInt(request.getParameter("length"));
-    }
-    
-    HashMap<String,Object> map = new HashMap<>();
-    map.put("startIndex", (pageNo - 1) * length);
-    map.put("length", length);
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     
     out.println("<html>");
     out.println("<head>");
-    out.println("  <title>게시물 목록조회</title>");
+    out.println("  <title>게시물 등록하기</title>");
+    
+    // HTML 페이지에 Refresh 폭탄 심기!
+    // => HTML 페이지를 완전히 출력한 후 지정된 시간이 경과하면 특정 URL을 자동으로 요청하게 만든다.
+    out.println("<meta http-equiv='Refresh' content='1;url=list.do'>");
+    
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시물 목록조회</h1>");
-    out.println("<p><a href='form.html'>새 글</a></p>");
+    out.println("<h1>게시물 등록 결과</h1>");
     
     try {
-      List<Board> list = boardDao.selectList(map);
-      for (Board b : list) {
-        out.printf("%d, <a href='detail.do?no=%1$d'>%s</a>, %s, %s, %d<br>\n", 
-            b.getNo(), b.getTitle(), b.getWriter(), b.getCreatedDate(), b.getViewCount());
-      }
+      boardDao.insert(board);
+      out.println("등록 성공입니다!");
       
     } catch (Exception e) {
-      out.println("데이터 목록 조회 오류입니다!");
+      out.println("데이터 처리 오류입니다!");
       e.printStackTrace();
     }
     
