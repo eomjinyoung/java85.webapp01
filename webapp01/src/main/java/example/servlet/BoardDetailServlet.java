@@ -2,8 +2,6 @@ package example.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -18,8 +16,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import example.dao.BoardDao;
 import example.vo.Board;
 
-@WebServlet("/board/list.do")
-public class BoardListServlet extends GenericServlet {
+@WebServlet("/board/detail.do")
+public class BoardDetailServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
   ApplicationContext iocContainer ;
@@ -27,47 +25,37 @@ public class BoardListServlet extends GenericServlet {
   
   @Override
   public void init(ServletConfig config) throws ServletException {
-    super.init(config); // 원래 GenericServlet 만든 메서드를 그대로 실행한다.
-    //그리고 다음 작업을 추가한다.
+    super.init(config); 
     iocContainer = new ClassPathXmlApplicationContext(
         "conf/application-context.xml");
-    
-    //스프링 IoC 컨테이너에 보관된 BoardDao 구현체를 꺼낸다.
     boardDao = iocContainer.getBean(BoardDao.class);
   }
   
   @Override
   public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    int pageNo = 1;
-    int length = 5;
-    
-    if (request.getParameter("pageNo") != null) {
-      pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    }
-    
-    if (request.getParameter("length") != null) {
-      length = Integer.parseInt(request.getParameter("length"));
-    }
-    
-    HashMap<String,Object> map = new HashMap<>();
-    map.put("startIndex", (pageNo - 1) * length);
-    map.put("length", length);
+    int no = Integer.parseInt(request.getParameter("no"));
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     
     out.println("<html>");
     out.println("<head>");
-    out.println("  <title>게시물 목록조회</title>");
+    out.println("  <title>게시물 상세조회</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시물 목록조회</h1>");
+    out.println("<h1>게시물 상세조회</h1>");
     
     try {
-      List<Board> list = boardDao.selectList(map);
-      for (Board b : list) {
-        out.printf("%d, <a href='detail.do?no=%1$d'>%s</a>, %s, %s, %d<br>\n", 
-            b.getNo(), b.getTitle(), b.getWriter(), b.getCreatedDate(), b.getViewCount());
+      Board board = boardDao.selectOne(no);
+      if (board == null) { 
+        out.println("해당 번호의 게시물이 없습니다.");
+      } else {
+        out.printf("번호: %d<br>", board.getNo());
+        out.printf("제목: %s<br>", board.getTitle());
+        out.printf("내용: %s<br>", board.getContents());
+        out.printf("작성자: %s<br>", board.getWriter());
+        out.printf("등록일: %s<br>", board.getCreatedDate());
+        out.printf("조회수: %s<br>", board.getViewCount());
       }
       
     } catch (Exception e) {
