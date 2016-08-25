@@ -2,6 +2,7 @@ package example.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -16,8 +17,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import example.dao.BoardDao;
 import example.vo.Board;
 
-@WebServlet("/board/detail.do")
-public class BoardDetailServlet extends GenericServlet {
+@WebServlet("/board/update.do")
+public class BoardUpdateServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
   ApplicationContext iocContainer ;
@@ -33,39 +34,37 @@ public class BoardDetailServlet extends GenericServlet {
   
   @Override
   public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    int no = Integer.parseInt(request.getParameter("no"));
+    request.setCharacterEncoding("UTF-8");
+    
+    Board board = new Board();
+    board.setNo(Integer.parseInt(request.getParameter("no")));
+    board.setTitle(request.getParameter("title"));
+    board.setContents(request.getParameter("contents"));
+    board.setPassword(request.getParameter("password"));
+    
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     
     out.println("<html>");
     out.println("<head>");
-    out.println("  <title>게시물 상세조회</title>");
+    out.println("  <title>게시물 변경하기</title>");
+    out.println("  <meta http-equiv='Refresh' content='1;url=list.do'>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시물 상세조회</h1>");
+    out.println("<h1>게시물 변경 결과</h1>");
     
     try {
-      Board board = boardDao.selectOne(no);
-      if (board == null) { 
-        out.println("해당 번호의 게시물이 없습니다.");
-      } else {
-        out.printf("<form action='update.do' method='post'>\n");
-        out.printf("<input type='hidden' name='no' value='%d'>\n", board.getNo());
-        out.printf("번호: %d<br>", board.getNo());
-        out.printf("제목: <input type='text' name='title' value='%s'><br>\n", 
-                   board.getTitle());
-        out.printf("내용: <textarea cols='60' rows='10' name='contents'>%s</textarea><br>\n", 
-                   board.getContents());
-        out.printf("암호: <input type='password' name='password'><br>\n");
-        out.printf("작성자: %s<br>\n", board.getWriter());
-        out.printf("등록일: %s<br>\n", board.getCreatedDate());
-        out.printf("조회수: %s<br>\n", board.getViewCount());
-        out.printf("<button>변경</button>\n");
-        out.printf("<p><a href='delete.do?no=%d'>삭제</a></p>\n", board.getNo());
-        out.printf("</form>\n");
-      }
+      HashMap<String,Object> paramMap = new HashMap<>();
+      paramMap.put("no", board.getNo());
+      paramMap.put("password", board.getPassword());
       
+      if (boardDao.selectOneByPassword(paramMap) == null) {
+        out.println("해당 게시물이 없거나 암호가 일치하지 않습니다!");
+      } else {
+        boardDao.update(board);
+        out.println("변경 성공입니다!");
+      }
     } catch (Exception e) {
       out.println("데이터 처리 오류입니다!");
       e.printStackTrace();

@@ -17,3 +17,13 @@
 - 게시물 입력 폼 추가  : /board/form.html
 - 게시물 목록조회 페이지에 "게시물 입력폼" 링크 추가
 - 게시물 입력 : BoardAddServlet
+
+# step06
+- 게시물 변경 : BoardUpdateServlet
+- 게시물 상세보기 페이지를 변경 가능 페이지로 바꾼다: BoardDetailServlet
+
+
+
+
+
+
