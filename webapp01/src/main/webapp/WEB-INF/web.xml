@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  version="3.1"
+  metadata-complete="false">
+
+  <!-- 이 서블릿은 클라이언트가 실행하는 서블릿이 아니기 때문에
+       서블릿에 대해 URL 정보를 설정하지 않는다. -->
+  <servlet>
+    <servlet-name>AppInitServlet</servlet-name>
+    <servlet-class>example.servlet.AppInitServlet</servlet-class>
+    
+    <!-- Spring IoC 컨테이너를 위한 설정 파일의 위치나 파일명이 언제든지 
+         변경될 수 있기 때문에 이렇게 외부 파일에 그 경로 정보를 두는 것이 좋다. -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>conf/application-context.xml</param-value>
+    </init-param>
+    
+    <!-- 이 서블릿은 다른 서블릿들을 위해 자원을 준비하는 일을 해야 한다.
+       그래서 init()가 호출될 수 있도록 웹 애플리케이션이 시작될 때
+       자동으로 이 서블릿을 만들게 해야 한다.
+       방법? <load-on-startup> 태그 추가 -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  
+</web-app>
+
+
+
+
+
+
+
+
+
+
+

@@ -28,6 +28,11 @@
 - 서블릿은 ApplicationContextHelper를 이용하여 IoC 컨테이너를 준비한다.
   BoardXxxServlet 클래스 변경하라!
 
+# step08
+- 서블릿들이 사용할 공통 자원을 준비시키는 AppInitServlet 생성
+- web.xml에 AppInitServlet 정보를 등록한다.
+- 모든 서블릿에 대해 SerlvetContext에 보관된 Spring IoC 컨테이너를 사용하도록 변경한다.
+- ApplicationContextHelper 클래스는 더이상 필요없다. 제거한다. 
 
 
 

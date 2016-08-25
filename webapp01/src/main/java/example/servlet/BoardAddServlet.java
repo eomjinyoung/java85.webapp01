@@ -5,13 +5,15 @@ import java.io.PrintWriter;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
+import org.springframework.context.ApplicationContext;
+
 import example.dao.BoardDao;
-import example.util.ApplicationContextHelper;
 import example.vo.Board;
 
 @WebServlet("/board/add.do")
@@ -22,8 +24,17 @@ public class BoardAddServlet extends GenericServlet {
   
   @Override
   public void init(ServletConfig config) throws ServletException {
-    super.init(config); 
-    boardDao = ApplicationContextHelper.getApplicationContext().getBean(BoardDao.class);
+    super.init(config);
+    
+    // 모든 서블릿이 공유하는 ServletContext 창고를 알아낸다.
+    ServletContext servletContext = config.getServletContext();
+    
+    // 창고에 보관된 Spring IoC 컨테이너를 꺼낸다.
+    ApplicationContext applicationContext = 
+        (ApplicationContext)servletContext.getAttribute("applicationContext");
+    
+    // Spring IoC 컨테이너에서 BoardDao 구현체를 꺼낸다.
+    boardDao = applicationContext.getBean(BoardDao.class);
   }
   
   @Override
