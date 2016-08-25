@@ -22,8 +22,22 @@
 - 게시물 변경 : BoardUpdateServlet
 - 게시물 상세보기 페이지를 변경 가능 페이지로 바꾼다: BoardDetailServlet
 
+# step07
+- 각 서블릿마다 개별적으로 만든 ApplicationContext(스프링 IoC 컨테이너)를 공유하기
+- ApplicationContextHelper 객체 생성 : ApplicationContext를 리턴해주는 역할.
+- 서블릿은 ApplicationContextHelper를 이용하여 IoC 컨테이너를 준비한다.
+  BoardXxxServlet 클래스 변경하라!
 
 
+
+
+
+
+
+
+
+
+  
 
 
 

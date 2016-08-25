@@ -11,25 +11,20 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import example.dao.BoardDao;
+import example.util.ApplicationContextHelper;
 import example.vo.Board;
 
 @WebServlet("/board/update.do")
 public class BoardUpdateServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
-  ApplicationContext iocContainer ;
   BoardDao boardDao;
   
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config); 
-    iocContainer = new ClassPathXmlApplicationContext(
-        "conf/application-context.xml");
-    boardDao = iocContainer.getBean(BoardDao.class);
+    boardDao = ApplicationContextHelper.getApplicationContext().getBean(BoardDao.class);
   }
   
   @Override

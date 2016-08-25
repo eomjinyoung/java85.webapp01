@@ -12,28 +12,20 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import example.dao.BoardDao;
+import example.util.ApplicationContextHelper;
 import example.vo.Board;
 
 @WebServlet("/board/list.do")
 public class BoardListServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
-  ApplicationContext iocContainer ;
   BoardDao boardDao;
   
   @Override
   public void init(ServletConfig config) throws ServletException {
-    super.init(config); // 원래 GenericServlet 만든 메서드를 그대로 실행한다.
-    //그리고 다음 작업을 추가한다.
-    iocContainer = new ClassPathXmlApplicationContext(
-        "conf/application-context.xml");
-    
-    //스프링 IoC 컨테이너에 보관된 BoardDao 구현체를 꺼낸다.
-    boardDao = iocContainer.getBean(BoardDao.class);
+    super.init(config); 
+    boardDao = ApplicationContextHelper.getApplicationContext().getBean(BoardDao.class);
   }
   
   @Override
