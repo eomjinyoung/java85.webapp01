@@ -14,10 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import example.dao.BoardDao;
-import example.vo.Board;
 
-@WebServlet("/board/detail.do")
-public class BoardDetailServlet extends GenericServlet {
+@WebServlet("/board/delete.do")
+public class BoardDeleteServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
   ApplicationContext iocContainer ;
@@ -41,22 +40,21 @@ public class BoardDetailServlet extends GenericServlet {
     out.println("<html>");
     out.println("<head>");
     out.println("  <title>게시물 상세조회</title>");
+    
+    // HTML 페이지에 Refresh 폭탄 심기!
+    // => HTML 페이지를 완전히 출력한 후 지정된 시간이 경과하면 특정 URL을 자동으로 요청하게 만든다.
+    out.println("<meta http-equiv='Refresh' content='1;url=list.do'>");
+    
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>게시물 상세조회</h1>");
     
     try {
-      Board board = boardDao.selectOne(no);
-      if (board == null) { 
+      int count = boardDao.delete(no);
+      if (count == 0) { 
         out.println("해당 번호의 게시물이 없습니다.");
       } else {
-        out.printf("번호: %d<br>", board.getNo());
-        out.printf("제목: %s<br>", board.getTitle());
-        out.printf("내용: %s<br>", board.getContents());
-        out.printf("작성자: %s<br>", board.getWriter());
-        out.printf("등록일: %s<br>", board.getCreatedDate());
-        out.printf("조회수: %s<br>", board.getViewCount());
-        out.printf("<p><a href='delete.do?no=%d'>삭제</a></p>", board.getNo());
+        out.println("삭제 성공입니다!");
       }
       
     } catch (Exception e) {
