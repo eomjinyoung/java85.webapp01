@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="example.dao.BoardDao">
+  <resultMap type="board" id="boardMap">
+    <id column="no" property="no"/> 
+    <result column="conts" property="contents"/>
+    <result column="cre_dt" property="createdDate"/>
+    <result column="vw_cnt" property="viewCount"/>
+  </resultMap>
+  
+  <select id="selectList" resultMap="boardMap" parameterType="map">
+    select no,title,cre_dt,vw_cnt 
+    from boards
+    <where>
+      <if test="title != null">title like concat('%', #{title}, '%')</if>
+      <if test="writer != null">and writer like concat('%', #{writer}, '%')</if>
+    </where>
+    order by 
+    <choose>
+      <when test="titleOrder == 'asc'">title asc</when>
+      <when test="titleOrder == 'desc'">title desc</when>
+      <when test="writerOrder == 'asc'">writer asc</when>
+      <when test="writerOrder == 'desc'">writer desc</when>
+      <when test="viewCountOrder == 'asc'">vw_cnt asc</when>
+      <when test="viewCountOrder == 'desc'">vw_cnt desc</when>
+      <when test="noOrder == 'asc'">no asc</when>
+      <otherwise>no desc</otherwise>
+    </choose>
+    limit #{startIndex}, #{length}
+  </select>
+  
+  <select id="selectOne" resultMap="boardMap" parameterType="int">
+    select no,title,cre_dt,vw_cnt,conts
+    from boards
+    where no = #{value}
+  </select>
+  
+  <select id="selectOneByPassword" resultMap="boardMap" parameterType="map">
+    select no,title,conts,cre_dt,vw_cnt 
+    from boards 
+    where no=#{no} and password=password(#{password})
+  </select>
+  
+  <insert id="insert" parameterType="board">
+    insert into boards(title, conts, password, cre_dt)
+    values(#{title}, #{contents}, password(#{password}), now())
+  </insert>
+  
+  <update id="update" parameterType="board">
+    update boards set 
+      title=#{title}, 
+      conts=#{contents} 
+    where no=#{no}
+  </update>
+  
+  <delete id="delete" parameterType="int">
+    delete from boards 
+    where no=#{value}
+  </delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
