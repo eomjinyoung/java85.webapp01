@@ -39,10 +39,6 @@ public class BoardAddServlet extends GenericServlet {
   
   @Override
   public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    // 클라이언트가 보내는 데이터는 UTF-8로 되어 있으니,
-    // Unicode로 잘 변환하여 값을 리턴하라!
-    request.setCharacterEncoding("UTF-8");
-    
     Board board = new Board();
     board.setPassword(request.getParameter("password"));
     board.setTitle(request.getParameter("title"));

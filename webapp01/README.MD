@@ -34,6 +34,13 @@
 - 모든 서블릿에 대해 SerlvetContext에 보관된 Spring IoC 컨테이너를 사용하도록 변경한다. 
 - ApplicationContextHelper 클래스는 더이상 필요없다. 제거한다. 
 
+# step09
+- 필터를 이용하여 요청 파라미터의 문자집합을 지정한다. : CharacterEncodingFilter
+- 모든 서블릿에서 request.setCharacterEncoding() 호출을 제거하라!
+- 서블릿에서 스프링 IoC 컨테이너를 준비하는 대신
+  필터에서 준비해보자! : AppInitFilter
+- 기존의 AppInitServlet 클래스는 제거한다.  
+  
 
 
 

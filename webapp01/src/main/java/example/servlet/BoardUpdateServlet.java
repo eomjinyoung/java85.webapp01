@@ -40,8 +40,6 @@ public class BoardUpdateServlet extends GenericServlet {
   
   @Override
   public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    request.setCharacterEncoding("UTF-8");
-    
     Board board = new Board();
     board.setNo(Integer.parseInt(request.getParameter("no")));
     board.setTitle(request.getParameter("title"));

@@ -27,6 +27,7 @@ public class BoardListServlet extends GenericServlet {
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config); 
+    System.out.println("BoardListServlet");
     
     // 모든 서블릿이 공유하는 ServletContext 창고를 알아낸다.
     ServletContext servletContext = config.getServletContext();
