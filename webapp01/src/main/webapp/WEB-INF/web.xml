@@ -6,6 +6,19 @@
   version="3.1"
   metadata-complete="false">
 
+  <!-- 리스너가 사용할 파라미터 등록 
+       이 파라미터는 글로벌 파라미터이다.
+       즉 리스너 뿐만 아니라 필터나 서블릿도 사용할 수 있다.-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>conf/application-context.xml</param-value>
+  </context-param>
+  
+  <!-- 리스너 등록 -->
+  <listener>
+    <listener-class>example.listener.ContextLoaderListener</listener-class>
+  </listener>
+
   <!-- 필터 등록 -->
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
@@ -14,21 +27,6 @@
     <init-param> 
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
-    </init-param>
-  </filter>
-  
-  <!-- Spring IoC 컨테이너를 준비하는 필터 
-       단 이 필터는 클라이언트 요청과 무관하기 때문에 URL을 지정하지 않는다.
-       즉 <filter-mapping> 태그를 설정하지 않는다.
-  -->
-  <filter>
-    <filter-name>AppInitFilter</filter-name>
-    <filter-class>example.filter.AppInitFilter</filter-class>
-    <!-- Spring IoC 컨테이너를 위한 설정 파일의 위치나 파일명이 언제든지 
-         변경될 수 있기 때문에 이렇게 외부 파일에 그 경로 정보를 두는 것이 좋다. -->
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>conf/application-context.xml</param-value>
     </init-param>
   </filter>
   

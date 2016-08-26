@@ -41,7 +41,12 @@
   필터에서 준비해보자! : AppInitFilter
 - 기존의 AppInitServlet 클래스는 제거한다.  
   
-
+# step10
+- 리스너를 이용하여 웹 애플리케이션이 시작될 때 스프링 IoC 컨테이너를 준비하자!
+  ContextLoaderListener
+- 웹 애플리케이션 DD 파일에 리스너를 등록하라!
+  그리고 스프링 설정 파일의 위치 정보를 컨텍스트 파라미터에 설정하라!
+- 기존의 AppInitFilter 클래스는 제거한다.
 
 
 
