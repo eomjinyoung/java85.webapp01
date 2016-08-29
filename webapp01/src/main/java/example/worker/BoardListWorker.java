@@ -1,51 +1,25 @@
-package example.servlet;
+package example.worker;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import example.dao.BoardDao;
 import example.vo.Board;
 
-@WebServlet("/board/list.do")
-public class BoardListServlet extends GenericServlet {
-  private static final long serialVersionUID = 1L;
-
+@Component("/board/list.do")
+public class BoardListWorker implements Worker {
+  @Autowired
   BoardDao boardDao;
   
   @Override
-  public void init(ServletConfig config) throws ServletException {
-    super.init(config); 
-    
-    // 스프링에서 제공하는 ContextLoaderListener를 사용한다면,
-    // 다음의 방식으로 스프링 IoC 컨테이너를 꺼내야 한다.
-    
-    //1) 모든 서블릿이 공유하는 ServletContext 창고를 알아낸다.
-    ServletContext servletContext = config.getServletContext();
-    
-    //2) ServletContext 창고와 WebApplicationContextUtils 도우미 객체를 사용하여 
-    //   스프링 IoC 컨테이너를 꺼낸다.
-    ApplicationContext applicationContext = 
-        WebApplicationContextUtils.getWebApplicationContext(servletContext);
-    
-    //3) Spring IoC 컨테이너에서 BoardDao 구현체를 꺼낸다.
-    boardDao = applicationContext.getBean(BoardDao.class);
-  }
-  
-  @Override
-  public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+  public void execute(ServletRequest request, ServletResponse response) throws Exception {
     int pageNo = 1;
     int length = 5;
     
