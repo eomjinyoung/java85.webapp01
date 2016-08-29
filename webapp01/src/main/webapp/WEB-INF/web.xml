@@ -11,18 +11,20 @@
        즉 리스너 뿐만 아니라 필터나 서블릿도 사용할 수 있다.-->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>conf/application-context.xml</param-value>
+    <!-- 스프링에서 제공하는 리스너를 사용할 때는 
+         설정 파일의 경로 앞에 classpath: 를 지정해야 한다. -->
+    <param-value>classpath:conf/application-context.xml</param-value>
   </context-param>
   
   <!-- 리스너 등록 -->
   <listener>
-    <listener-class>example.listener.ContextLoaderListener</listener-class>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
   <!-- 필터 등록 -->
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
-    <filter-class>example.filter.CharacterEncodingFilter</filter-class>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <!-- 필터에서 사용할 파라미터를 설정한다. -->
     <init-param> 
       <param-name>encoding</param-name>

@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import example.dao.BoardDao;
 
@@ -25,14 +26,18 @@ public class BoardDeleteServlet extends GenericServlet {
   public void init(ServletConfig config) throws ServletException {
     super.init(config); 
     
-    // 모든 서블릿이 공유하는 ServletContext 창고를 알아낸다. 
+ // 스프링에서 제공하는 ContextLoaderListener를 사용한다면,
+    // 다음의 방식으로 스프링 IoC 컨테이너를 꺼내야 한다.
+    
+    //1) 모든 서블릿이 공유하는 ServletContext 창고를 알아낸다.
     ServletContext servletContext = config.getServletContext();
     
-    // 창고에 보관된 Spring IoC 컨테이너를 꺼낸다.
+    //2) ServletContext 창고와 WebApplicationContextUtils 도우미 객체를 사용하여 
+    //   스프링 IoC 컨테이너를 꺼낸다.
     ApplicationContext applicationContext = 
-        (ApplicationContext)servletContext.getAttribute("applicationContext");
+        WebApplicationContextUtils.getWebApplicationContext(servletContext);
     
-    // Spring IoC 컨테이너에서 BoardDao 구현체를 꺼낸다.
+    //3) Spring IoC 컨테이너에서 BoardDao 구현체를 꺼낸다.
     boardDao = applicationContext.getBean(BoardDao.class);
   }
   

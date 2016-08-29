@@ -25,9 +25,16 @@ repositories {
 dependencies {
   compile group: 'org.mybatis', name: 'mybatis', version: '3.4.1'
   compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.39'
-  compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+  
+  // spring-webmvc 라이브러리를 추가한다면 spring-context 라이브러리는 추가하지 않아도 된다.
+  // 왜냐하면 spring-context는 spring-webmvc의 의존 라이브러리이기 때문이다.
+  // 의존 라이브러리는 자동으로 포함된다. 
+  //compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+  
   compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.0'
   compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.2.RELEASE'
+  compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.2.RELEASE'
+
 
   // 개발하는 동안 라이브러리를 사용하고, 개발이 끝난 후 배치에서 제외해야 하는 라이브러리는
   // providedCompile 옵션을 사용하라!

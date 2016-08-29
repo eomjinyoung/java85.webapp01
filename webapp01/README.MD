@@ -48,6 +48,16 @@
   그리고 스프링 설정 파일의 위치 정보를 컨텍스트 파라미터에 설정하라!
 - 기존의 AppInitFilter 클래스는 제거한다.
 
+# step11
+- Spring MVC 프레임워크의 일부 기능 사용
+  => 클라이언트가 POST 요청으로 보내는 데이터의 문자집합을 지정하는 필터
+       org.springframework.web.filter.CharacterEncodingFilter
+  => 스프링 IoC 컨테이너를 준비하는 리스너
+       org.springframework.web.context.ContextLoaderListener
+- 기존의 필터와 리스너는 제거한다.
+- 스프링에서 준비한 IoC 컨테이너를 사용하려면 도우미 클래스를 이용해야 한다.
+  예전처럼 ServletContext 객체에서 스프링 IoC 컨테이너를 꺼낼 수 없다.
+  => 각 서블릿의 코드를 변경하라!
 
 
 
