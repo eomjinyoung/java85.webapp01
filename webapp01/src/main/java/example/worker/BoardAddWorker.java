@@ -1,7 +1,6 @@
 package example.worker;
 
-import java.io.PrintWriter;
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,21 +27,13 @@ public class BoardAddWorker implements Worker {
       response.sendRedirect("list.do");
       
     } catch (Exception e) {
-      e.printStackTrace();
+      //ServletRequest 보관소에 오류 정보 저장
+      request.setAttribute("error", e);
     
       response.setHeader("Refresh", "3;url=list.do");
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
       
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<title>게시물 등록하기</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h1>게시물 등록 결과</h1>");
-      out.println("데이터 처리 오류입니다!");
-      out.println("</body>");
-      out.println("</html>");
+      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      rd.forward(request, response);
     }
   }
 

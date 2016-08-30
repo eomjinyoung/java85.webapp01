@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,6 +44,11 @@ public class BoardListWorker implements Worker {
     out.println("  <title>게시물 목록조회</title>");
     out.println("</head>");
     out.println("<body>");
+    
+    // 페이지 상단에 정보 출력하기 위해 include 기법 사용.
+    RequestDispatcher rd = request.getRequestDispatcher("/header");
+    rd.include(request, response); // 실행하고 돌아와야 하기 때문에 include 여야 한다.
+    
     out.println("<h1>게시물 목록조회</h1>");
     out.println("<p><a href='form.html'>새 글</a></p>");
     
@@ -54,9 +60,16 @@ public class BoardListWorker implements Worker {
       }
       
     } catch (Exception e) {
-      out.println("데이터 목록 조회 오류입니다!");
-      e.printStackTrace();
+      //ServletRequest 보관소에 오류 정보 저장
+      request.setAttribute("error", e);
+      
+      rd = request.getRequestDispatcher("/error");
+      rd.forward(request, response);
     }
+    
+    // 페이지 하단에 정보 출력하기 위해 include 기법 사용.
+    rd = request.getRequestDispatcher("/footer");
+    rd.include(request, response); // 실행하고 돌아와야 하기 때문에 include 여야 한다.
     
     out.println("</body>");
     out.println("</html>");

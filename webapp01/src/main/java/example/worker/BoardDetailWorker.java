@@ -2,6 +2,7 @@ package example.worker;
 
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +19,6 @@ public class BoardDetailWorker implements Worker {
   
   @Override
   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    int no = Integer.parseInt(request.getParameter("no"));
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
@@ -28,9 +28,15 @@ public class BoardDetailWorker implements Worker {
     out.println("  <title>게시물 상세조회</title>");
     out.println("</head>");
     out.println("<body>");
+    
+    // 페이지 상단에 정보 출력하기 위해 include 기법 사용.
+    RequestDispatcher rd = request.getRequestDispatcher("/header");
+    rd.include(request, response); // 실행하고 돌아와야 하기 때문에 include 여야 한다.
+    
     out.println("<h1>게시물 상세조회</h1>");
     
     try {
+      int no = Integer.parseInt(request.getParameter("no"));
       Board board = boardDao.selectOne(no);
       if (board == null) { 
         out.println("해당 번호의 게시물이 없습니다.");
@@ -52,9 +58,16 @@ public class BoardDetailWorker implements Worker {
       }
       
     } catch (Exception e) {
-      out.println("데이터 처리 오류입니다!");
-      e.printStackTrace();
+      //ServletRequest 보관소에 오류 정보 저장
+      request.setAttribute("error", e);
+      
+      rd = request.getRequestDispatcher("/error");
+      rd.forward(request, response);
     }
+    
+    // 페이지 하단에 정보 출력하기 위해 include 기법 사용.
+    rd = request.getRequestDispatcher("/footer");
+    rd.include(request, response); // 실행하고 돌아와야 하기 때문에 include 여야 한다.
     
     out.println("</body>");
     out.println("</html>");

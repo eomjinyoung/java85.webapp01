@@ -22,33 +22,33 @@
 - 게시물 변경 : BoardUpdateServlet
 - 게시물 상세보기 페이지를 변경 가능 페이지로 바꾼다: BoardDetailServlet
 
-# step07
+# step07 (스프링 IoC 컨테이너 응용)
 - 각 서블릿마다 개별적으로 만든 ApplicationContext(스프링 IoC 컨테이너)를 공유하기
 - ApplicationContextHelper 객체 생성 : ApplicationContext를 리턴해주는 역할.
 - 서블릿은 ApplicationContextHelper를 이용하여 IoC 컨테이너를 준비한다.
   BoardXxxServlet 클래스 변경하라!
 
-# step08
+# step08 (서블릿 응용)
 - 서블릿들이 사용할 공통 자원을 준비시키는 AppInitServlet 생성
 - web.xml에 AppInitServlet 정보를 등록한다.
 - 모든 서블릿에 대해 SerlvetContext에 보관된 Spring IoC 컨테이너를 사용하도록 변경한다. 
 - ApplicationContextHelper 클래스는 더이상 필요없다. 제거한다. 
 
-# step09
+# step09 (필터 응용)
 - 필터를 이용하여 요청 파라미터의 문자집합을 지정한다. : CharacterEncodingFilter
 - 모든 서블릿에서 request.setCharacterEncoding() 호출을 제거하라!
 - 서블릿에서 스프링 IoC 컨테이너를 준비하는 대신
   필터에서 준비해보자! : AppInitFilter
 - 기존의 AppInitServlet 클래스는 제거한다.  
   
-# step10
+# step10 (리스너 응용)
 - 리스너를 이용하여 웹 애플리케이션이 시작될 때 스프링 IoC 컨테이너를 준비하자!
   ContextLoaderListener
 - 웹 애플리케이션 DD 파일에 리스너를 등록하라!
   그리고 스프링 설정 파일의 위치 정보를 컨텍스트 파라미터에 설정하라!
 - 기존의 AppInitFilter 클래스는 제거한다.
 
-# step11
+# step11 (Spring MVC 라이브러리의 필터와 리스너 사용)
 - Spring MVC 프레임워크의 일부 기능 사용
   => 클라이언트가 POST 요청으로 보내는 데이터의 문자집합을 지정하는 필터
        org.springframework.web.filter.CharacterEncodingFilter
@@ -59,7 +59,7 @@
   예전처럼 ServletContext 객체에서 스프링 IoC 컨테이너를 꺼낼 수 없다.
   => 각 서블릿의 코드를 변경하라!
 
-# step12
+# step12 (프론터 컨트롤러 도입)
 - 클라이언트 요청을 처리하는 서블릿의 관리자를 
   서블릿 컨테이너에서 스프링 IoC 컨테이너로 바꾼다.
   => 이점
@@ -80,8 +80,7 @@
 3) 클라이언트 요청을 전달할 서블릿 객체를 만든다.
    => DispatcherServlet 클래스 작성
 
-# step13
-- HttpServlet 클래스와 Redirect, Refresh의 응용
+# step13 (HttpServlet 클래스와 Redirect, Refresh의 응용)
 - DispatcherServlet 클래스의 상위 클래스를 GenericServlet 클래스에서
   HttpServlet 클래스로 교체한다.
 - Worker의 execute() 메서드에서 파라미터 타입을 변경한다.
@@ -89,7 +88,15 @@
 - Redirect 적용하기
   => BoardAddWorker, BoardDeleteWorker, BoardUpdateWorker
   
-
+# step14 (forward/include, ServletRequest 보관소 응용)
+- 오류를 처리할 서블릿 추가한다.
+  => ErrorServlet
+- 서블릿에 있는 오류 처리 코드를 제거하고 대신에 
+  ErrorServlet 으로 포워딩한다.
+- ServletRequest 보관소를 사용하여 오류 정보를 ErrorServlet과 공유한다.
+- include 응용
+  FooterServlet 추가 및 include 
+  HeaderServlet 추가 및 include 
 
 
 
