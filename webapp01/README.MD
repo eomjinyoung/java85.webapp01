@@ -80,7 +80,15 @@
 3) 클라이언트 요청을 전달할 서블릿 객체를 만든다.
    => DispatcherServlet 클래스 작성
 
-
+# step13
+- HttpServlet 클래스와 Redirect, Refresh의 응용
+- DispatcherServlet 클래스의 상위 클래스를 GenericServlet 클래스에서
+  HttpServlet 클래스로 교체한다.
+- Worker의 execute() 메서드에서 파라미터 타입을 변경한다.
+- Worker 구현체를 변경한다.
+- Redirect 적용하기
+  => BoardAddWorker, BoardDeleteWorker, BoardUpdateWorker
+  
 
 
 

@@ -3,13 +3,12 @@ package example.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -17,7 +16,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import example.worker.Worker;
 
 @WebServlet("*.do")
-public class DispatcherServlet extends GenericServlet {
+public class DispatcherServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
  
   // 스프링 IoC 컨테이너
@@ -33,21 +32,11 @@ public class DispatcherServlet extends GenericServlet {
   }
   
   @Override
-  public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-    //1) 클라이언트가 요청한 서블릿 경로를 알아낸다.
-    //=> ServletRequest에는 서블릿 경로를 알아내는 메서드가 없다.
-    //=> 파라미터로 넘어오는 객체는 원래 HttpServletRequest 객체이다.
-    //=> 따라서 원래 타입으로 형변환해라!
-    HttpServletRequest httpRequest = (HttpServletRequest)request;
+  protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String servletPath = request.getServletPath();
     
-    //예) URL => http://localhost:8080/web02/board/list.do?pageNo=2&length=5
-    // getServletPath()의 리턴 값 => /board/list.do
-    String servletPath = httpRequest.getServletPath();
-    
-    //2) 서블릿 경로를 가지고 그 요청을 처리할 워커를 찾는다.
     Worker worker = (Worker)applicationContext.getBean(servletPath);
     
-    //3) 해당 URL을 처리할 워커가 있다면 실행하고, 없다면 안내 메시지를 출력한다.
     if (worker != null) {
       try {
         worker.execute(request, response);

@@ -2,8 +2,8 @@ package example.worker;
 
 import java.io.PrintWriter;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class BoardDetailWorker implements Worker {
   BoardDao boardDao;
   
   @Override
-  public void execute(ServletRequest request, ServletResponse response) throws Exception {
+  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     
     response.setContentType("text/html;charset=UTF-8");
