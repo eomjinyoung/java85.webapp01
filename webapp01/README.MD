@@ -112,7 +112,9 @@
 # step16 (쿠키를 이용한 로그인 이메일 저장 구현)
 - LoginServlet에 "이메일저장" 기능 추가
 
-
+# step17 (JSP를 이용하여 서블릿에서 출력 코드를 분리하기)
+- LoginServlet에서 로그인폼 출력 코드를 JSP로 분리하기
+  => /webapp/auth/LoginForm.jsp
 
 
 

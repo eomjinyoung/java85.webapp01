@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,22 +52,11 @@ public class LoginServlet extends HttpServlet {
       }
     }
     
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<title>로그인</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>로그인</h1>");
-    out.println("<form action='login' method='post'>");
-    out.printf("이메일: <input type='text' name='email' size='40' value='%s'><br>\n", email);
-    out.println("암호: <input type='password' name='password'><br>");
-    out.printf("<input type='checkbox' name='saveEmail' %s> 이메일 저장<br>\n", checked);
-    out.println("<button>로그인</button>");
-    out.println("</form>");
-    out.println("</body>");
-    out.println("</html>");
+    request.setAttribute("email", email);
+    request.setAttribute("checked", checked);
+    
+    RequestDispatcher rd = request.getRequestDispatcher("/auth/LoginForm.jsp");
+    rd.forward(request, response);
   }
   
   @Override
