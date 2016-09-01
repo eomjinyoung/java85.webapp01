@@ -107,6 +107,7 @@
 - "Member" Value Object 클래스 추가  
 - MemberDao 인터페이스 추가
 - MemberMapper.xml 파일 추가
+- HeaderServlet 에 로그인 사용의 이름 출력하기
 
 
 

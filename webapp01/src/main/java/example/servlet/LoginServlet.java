@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -68,14 +69,23 @@ public class LoginServlet extends HttpServlet {
     
     Member member = memberDao.selectOneByEmailAndPassword(paramMap);
     
+    HttpSession session = request.getSession();
+    
     if (member == null) {
+      // 로그인 실패한다면, 기존 세션도 무효화시킨다.
+      session.invalidate();
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
       out.println("<html><head><title>로그인 결과</title></head>");
       out.println("<body><p>이메일 또는 암호가 일치하지 않거나 존재하지 않는 사용자입니다.</p>");
       out.println("</body></html>");
+      
     } else {
-      // 있다면, 메인화면으로 리다이렉트한다.
+      // 로그인 성공 했다면, 다른 서블릿이 로그인한 사용자 정보를 사용할 수 있도록 세션에 보관한다.
+      session.setAttribute("member", member);
+      
+      // 메인화면으로 리다이렉트한다.
       response.sendRedirect("../board/list.do");
     }
   }
