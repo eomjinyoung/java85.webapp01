@@ -104,6 +104,9 @@
   doPost() : 로그인 처리
 - LogoutServlet 클래스 추가
   doGet() : 세션 무효화처리  
+- "Member" Value Object 클래스 추가  
+- MemberDao 인터페이스 추가
+- MemberMapper.xml 파일 추가
 
 
 
