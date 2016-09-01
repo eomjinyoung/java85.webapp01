@@ -98,7 +98,7 @@
   FooterServlet 추가 및 include 
   HeaderServlet 추가 및 include 
 
-# step15 (쿠키와 세션을 활용한 로그인/로그아웃 구현)
+# step15 (세션을 활용한 로그인/로그아웃 구현)
 - LoginServlet 클래스 추가
   doGet() : 로그인 폼 제공
   doPost() : 로그인 처리
@@ -108,6 +108,10 @@
 - MemberDao 인터페이스 추가
 - MemberMapper.xml 파일 추가
 - HeaderServlet 에 로그인 사용의 이름 출력하기
+
+# step16 (쿠키를 이용한 로그인 이메일 저장 구현)
+- LoginServlet에 "이메일저장" 기능 추가
+
 
 
 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,19 @@ public class LoginServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
+    Cookie[] cookies = request.getCookies();
+    String email = "";
+    String checked = "";
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("email")) {
+          email = cookie.getValue();
+          checked = "checked";
+          break;
+        }
+      }
+    }
+    
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     out.println("<html>");
@@ -46,8 +60,9 @@ public class LoginServlet extends HttpServlet {
     out.println("<body>");
     out.println("<h1>로그인</h1>");
     out.println("<form action='login' method='post'>");
-    out.println("이메일: <input type='text' name='email' size='40'><br>");
+    out.printf("이메일: <input type='text' name='email' size='40' value='%s'><br>\n", email);
     out.println("암호: <input type='password' name='password'><br>");
+    out.printf("<input type='checkbox' name='saveEmail' %s> 이메일 저장<br>\n", checked);
     out.println("<button>로그인</button>");
     out.println("</form>");
     out.println("</body>");
@@ -58,9 +73,16 @@ public class LoginServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String email = request.getParameter("email");
     String password = request.getParameter("password");
+    String saveEmail = request.getParameter("saveEmail");
     
-    System.out.println(email);
-    System.out.println(password);
+    Cookie cookie = new Cookie("email", email);
+    if (saveEmail == null) {
+      cookie.setMaxAge(0); // 유효기간이 0이면 웹브라우저는 "email" 이름으로 저장된 쿠키를 삭제한다.
+    } else {
+      cookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키를 1주일 저장한다.
+    }
+    response.addCookie(cookie);
+    
     
     // DB에서 해당 이메일과 암호가 일치하는 사용자가 있는지 조사한다.
     HashMap<String,Object> paramMap = new HashMap<>();
@@ -75,6 +97,7 @@ public class LoginServlet extends HttpServlet {
       // 로그인 실패한다면, 기존 세션도 무효화시킨다.
       session.invalidate();
       
+      response.setHeader("Refresh", "2;url=login");
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
       out.println("<html><head><title>로그인 결과</title></head>");
