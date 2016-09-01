@@ -98,7 +98,12 @@
   FooterServlet 추가 및 include 
   HeaderServlet 추가 및 include 
 
-
+# step15 (쿠키와 세션을 활용한 로그인/로그아웃 구현)
+- LoginServlet 클래스 추가
+  doGet() : 로그인 폼 제공
+  doPost() : 로그인 처리
+- LogoutServlet 클래스 추가
+  doGet() : 세션 무효화처리  
 
 
 
