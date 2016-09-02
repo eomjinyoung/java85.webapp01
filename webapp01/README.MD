@@ -126,7 +126,13 @@
 - ErrorServlet을 error.jsp로 전환
   => ErrorServlet 클래스 삭제
 
-
+# step19 (로그인/로그아웃 서블릿을 Worker 객체로 전환)
+- LoginServlet 클래스를 LoginWorker 클래스로 변경
+  => /webapp/auth/LoginForm.jsp에서 <form>의 action 속성 변경
+  => header.jsp 에서 링크 변경
+  => LoginServlet 클래스 삭제
+- LogoutServlet 클래스를 LogoutWorker 클래스로 변경 
+  => LogoutServlet 클래스 삭제
 
 
 

@@ -13,7 +13,7 @@ String checked = (String)request.getAttribute("checked");
 </head>
 <body>
 <h1>로그인2</h1>
-<form action='login' method='post'>
+<form action='login.do' method='post'>
 이메일: <input type='text' name='email' size='40' value='<%=email%>'><br>
 암호: <input type='password' name='password'><br>
 <input type='checkbox' name='saveEmail' <%=checked%>> 이메일 저장<br>

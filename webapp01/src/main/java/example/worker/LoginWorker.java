@@ -1,44 +1,36 @@
-package example.servlet;
+package example.worker;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import example.dao.MemberDao;
 import example.vo.Member;
 
-@WebServlet("/auth/login")
-public class LoginServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+@Component("/auth/login.do")
+public class LoginWorker implements Worker {
 
+  @Autowired
   MemberDao memberDao;
   
   @Override
-  public void init() throws ServletException {
-    // 서블릿 컨테이너 ---> init(ServletConfig) 호출 ---> init() 호출
-    // => 따라서 이 메서드를 오버라이딩하는 것은 init(ServletConfig)를 재정의하는 것과 같은 효과를 가진다.
-    ServletContext sc = this.getServletContext();
-    ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sc);
-    memberDao = applicationContext.getBean(MemberDao.class);
-  
+  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    if (request.getMethod().equals("POST")) {
+      doPost(request, response);
+    } else {
+      doGet(request, response);
+    }
   }
   
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-      throws ServletException, IOException {
+  private void doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
     Cookie[] cookies = request.getCookies();
     String email = "";
     String checked = "";
@@ -59,8 +51,7 @@ public class LoginServlet extends HttpServlet {
     rd.forward(request, response);
   }
   
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  private void doPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String saveEmail = request.getParameter("saveEmail");
