@@ -116,7 +116,9 @@
 - LoginServlet에서 로그인폼 출력 코드를 JSP로 분리하기
   => /webapp/auth/LoginForm.jsp
 
-
+# step18 (JSP를 다른 모든 서블릿(또는 워커)에 적용한다.)
+- BoardListWorker에 JSP 적용 =>/webapp/board/BoardList.jsp 파일 추가
+  
 
 
 
