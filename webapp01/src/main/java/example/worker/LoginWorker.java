@@ -1,9 +1,7 @@
 package example.worker;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,15 +20,15 @@ public class LoginWorker implements Worker {
   MemberDao memberDao;
   
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     if (request.getMethod().equals("POST")) {
-      doPost(request, response);
+      return doPost(request, response);
     } else {
-      doGet(request, response);
+      return doGet(request, response);
     }
   }
   
-  private void doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  private String doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
     Cookie[] cookies = request.getCookies();
     String email = "";
     String checked = "";
@@ -47,11 +45,10 @@ public class LoginWorker implements Worker {
     request.setAttribute("email", email);
     request.setAttribute("checked", checked);
     
-    RequestDispatcher rd = request.getRequestDispatcher("/auth/LoginForm.jsp");
-    rd.forward(request, response);
+    return "/auth/LoginForm.jsp";
   }
   
-  private void doPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  private String doPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String saveEmail = request.getParameter("saveEmail");
@@ -77,20 +74,12 @@ public class LoginWorker implements Worker {
     if (member == null) {
       // 로그인 실패한다면, 기존 세션도 무효화시킨다.
       session.invalidate();
-      
-      response.setHeader("Refresh", "2;url=login.do");
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      out.println("<html><head><title>로그인 결과</title></head>");
-      out.println("<body><p>이메일 또는 암호가 일치하지 않거나 존재하지 않는 사용자입니다.</p>");
-      out.println("</body></html>");
+      return "/auth/LoginFail.jsp";
       
     } else {
       // 로그인 성공 했다면, 다른 서블릿이 로그인한 사용자 정보를 사용할 수 있도록 세션에 보관한다.
       session.setAttribute("member", member);
-      
-      // 메인화면으로 리다이렉트한다.
-      response.sendRedirect("../board/list.do");
+      return "redirect:../board/list.do";
     }
   }
 }

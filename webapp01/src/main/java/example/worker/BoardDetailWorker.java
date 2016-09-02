@@ -1,6 +1,5 @@
 package example.worker;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,13 +15,12 @@ public class BoardDetailWorker implements Worker {
   BoardDao boardDao;
   
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     Board board = boardDao.selectOne(no);
     request.setAttribute("board", board);
     
-    RequestDispatcher rd = request.getRequestDispatcher("/board/BoardDetail.jsp");
-    rd.forward(request, response);
+    return "/board/BoardDetail.jsp";
   }
 
 }

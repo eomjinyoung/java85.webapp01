@@ -14,10 +14,11 @@ public class BoardDeleteWorker implements Worker {
   BoardDao boardDao;
   
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     boardDao.delete(no);
-    response.sendRedirect("list.do");
+    
+    return "redirect:list.do";
   }
 
 }

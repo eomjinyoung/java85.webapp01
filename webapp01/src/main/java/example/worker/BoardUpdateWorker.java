@@ -17,7 +17,7 @@ public class BoardUpdateWorker implements Worker {
   BoardDao boardDao;
   
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     Board board = new Board();
     board.setNo(Integer.parseInt(request.getParameter("no")));
     board.setTitle(request.getParameter("title"));
@@ -33,7 +33,8 @@ public class BoardUpdateWorker implements Worker {
     }
 
     boardDao.update(board);
-    response.sendRedirect("list.do");
+    
+    return "redirect:list.do";
   }
 
 }

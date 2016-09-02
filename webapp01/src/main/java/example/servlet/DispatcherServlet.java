@@ -40,7 +40,14 @@ public class DispatcherServlet extends HttpServlet {
     
     if (worker != null) {
       try {
-        worker.execute(request, response);
+        String url = worker.execute(request, response);
+        
+        if (url.startsWith("redirect:")) {
+          response.sendRedirect(url.substring(9)); // url에서 "redirect:" 접두어 제거한다.
+        } else {
+          RequestDispatcher rd = request.getRequestDispatcher(url);
+          rd.forward(request, response);
+        }
         
       } catch (Exception e) {
         e.printStackTrace();

@@ -3,7 +3,6 @@ package example.worker;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +18,7 @@ public class BoardListWorker implements Worker {
   BoardDao boardDao;
   
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int pageNo = 1;
     int length = 5;
     
@@ -38,8 +37,7 @@ public class BoardListWorker implements Worker {
     List<Board> list = boardDao.selectList(map);
     request.setAttribute("list", list);
     
-    RequestDispatcher rd = request.getRequestDispatcher("/board/BoardList.jsp");
-    rd.forward(request, response);
+    return "/board/BoardList.jsp";
   }
 
 }

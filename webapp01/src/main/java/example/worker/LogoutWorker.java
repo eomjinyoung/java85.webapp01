@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 @Component("/auth/logout.do")
 public class LogoutWorker implements Worker {
   @Override
-  public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     request.getSession().invalidate();
-    
-    response.sendRedirect("login.do");
+    return "redirect:login.do";
   }
 }
 
