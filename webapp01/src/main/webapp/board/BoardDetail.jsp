@@ -12,7 +12,7 @@ Board board = (Board)request.getAttribute("board");
 <title>게시물 상세조회</title>
 </head>
 <body>
-<jsp:include page="/header"></jsp:include>
+<jsp:include page="/header.jsp"></jsp:include>
 <h1>게시물 상세조회2</h1>
 <%if (board == null) { %>
   <p>해당 게시물이 존재하지 않습니다.</p>
@@ -30,7 +30,7 @@ Board board = (Board)request.getAttribute("board");
 	<p><a href='delete.do?no=<%=board.getNo()%>'>삭제</a></p>
 	</form>
 <%}%>
-<jsp:include page="/footer"></jsp:include>
+<jsp:include page="/footer.jsp"></jsp:include>
 </body>
 </html>
 

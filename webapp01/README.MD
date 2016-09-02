@@ -119,7 +119,12 @@
 # step18 (JSP를 다른 모든 서블릿(또는 워커)에 적용한다.)
 - BoardListWorker에 JSP 적용 => /webapp/board/BoardList.jsp 파일 추가
 - BoardDetailWorker에 JSP 적용 => /webapp/board/BoardDetail.jsp 파일 추가  
-
+- FooterServlet을 footer.jsp로 전환
+  => FooterServlet 클래스 삭제
+- HeaderServlet을 header.jsp로 전환
+  => HeaderServlet 클래스 삭제
+- ErrorServlet을 error.jsp로 전환
+  => ErrorServlet 클래스 삭제
 
 
 

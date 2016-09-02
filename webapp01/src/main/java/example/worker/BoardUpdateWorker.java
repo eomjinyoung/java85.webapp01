@@ -41,7 +41,7 @@ public class BoardUpdateWorker implements Worker {
       //ServletRequest 보관소에 오류 정보 저장
       request.setAttribute("error", e);
     
-      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
       rd.forward(request, response);
     }
   }

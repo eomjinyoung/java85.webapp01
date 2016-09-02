@@ -44,7 +44,7 @@ public class BoardListWorker implements Worker {
       
     } catch (Exception e) {
       request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
       rd.forward(request, response);
     }
   }

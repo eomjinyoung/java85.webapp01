@@ -28,7 +28,7 @@ public class BoardDeleteWorker implements Worker {
       
       response.setHeader("Refresh", "3;url=list.do");
       
-      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
       rd.forward(request, response);
     }
   }

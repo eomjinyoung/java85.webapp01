@@ -14,7 +14,7 @@ String checked = (String)request.getAttribute("checked");
 <title>게시물 목록조회</title>
 </head>
 <body>
-<jsp:include page="/header"></jsp:include>
+<jsp:include page="/header.jsp"></jsp:include>
 <h1>게시물 목록조회2</h1>
 <p><a href='form.html'>새 글</a></p>
 <%
@@ -26,7 +26,7 @@ for (Board board : list) {%>
   <%=board.getCreatedDate()%>, 
   <%=board.getViewCount()%><br>  
 <%}%>
-<jsp:include page="/footer"></jsp:include>
+<jsp:include page="/footer.jsp"></jsp:include>
 </body>
 </html>
 
