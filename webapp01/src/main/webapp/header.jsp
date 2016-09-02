@@ -12,7 +12,7 @@ if (member != null) {%>
     <a href='<%=request.getContextPath()%>/auth/logout.do' style='color:yellow;'>로그아웃</a></div> 
 <%} else {%>
   <div style='position:absolute;right:0px;top:0px;font-size:15px;'>
-    <a href='<%=request.getContextPath()%>/auth/login.do' style='color:yellow;'>로그인</a></div> 
+    <a href='<%=request.getContextPath()%>/auth/form.do' style='color:yellow;'>로그인</a></div> 
 <%}%>
 </div>
 

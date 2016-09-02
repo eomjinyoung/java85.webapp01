@@ -144,7 +144,17 @@
 - Worker 인터페이스의 execute() 메서드 리턴 타입 변경 
   void execute(...) ---> String execute(...)
   
-
+# step22 (특정 업무와 관련된 Worker들을 한 Worker에 모으기)
+- controller 패키지 생성
+- controller 패키지 생성- BoardListWorker, BoardAddWorker, BoardUpdateWorker, BoardDeleteWorker, 
+  BoardDetailWorker ----> BoardController 클래스로 모은다.
+- LoginWorker, LogoutWorker ----> AuthController 클래스로 모은다. 
+- DispatcherServlet 변경하라!
+  => 요청이 들어오면,
+     1) Spring IoC 컨테이너에서 @Component 애노테이션이 붙은 객체를 꺼낸다.
+     2) 해당 객체에서 @RequestMapping 이 붙은 메서드를 꺼낸다.
+     3) 그 메서드 중에서 요청하는 서블릿 경로와 일치하는 메서드를 꺼낸다.
+     4) 그 메서드를 호출한다. 
 
 
 

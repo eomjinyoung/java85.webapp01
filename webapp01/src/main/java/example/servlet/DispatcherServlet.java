@@ -2,6 +2,8 @@ package example.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -12,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import example.worker.Worker;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet {
@@ -35,12 +37,16 @@ public class DispatcherServlet extends HttpServlet {
   @Override
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String servletPath = request.getServletPath();
+
+    Object pageController = findPageController(servletPath);
+    Method requestHandler = null;
+    if (pageController != null) {
+      requestHandler = findRequestHandler(servletPath, pageController);
+    }
     
-    Worker worker = (Worker)applicationContext.getBean(servletPath);
-    
-    if (worker != null) {
+    if (requestHandler != null) {
       try {
-        String url = worker.execute(request, response);
+        String url = (String)requestHandler.invoke(pageController, request, response);
         
         if (url.startsWith("redirect:")) {
           response.sendRedirect(url.substring(9)); // url에서 "redirect:" 접두어 제거한다.
@@ -65,6 +71,37 @@ public class DispatcherServlet extends HttpServlet {
       out.println("<p>해당 URL을 처리할 수 없습니다.</p>");
       out.println("</body></html>");
     }
+  }
+
+  private Method findRequestHandler(String servletPath, Object pageController) {
+    Class<?> clazz = pageController.getClass();
+    Method[] methods = clazz.getMethods();
+    RequestMapping mapping = null;
+    
+    for (Method m : methods) { 
+      mapping = m.getAnnotation(RequestMapping.class);
+      if (mapping == null) 
+        continue;
+      if (servletPath.endsWith(mapping.value()[0] + ".do")) {
+        return m;
+      }
+    }
+    return null;
+  }
+
+  private Object findPageController(String servletPath) {
+    Map<String,Object> controllerMap = applicationContext.getBeansWithAnnotation(Controller.class);
+    Class<?> clazz = null;
+    RequestMapping mapping = null;
+    
+    for (Object controller : controllerMap.values()) {
+      clazz = controller.getClass();
+      mapping = clazz.getAnnotation(RequestMapping.class);
+      if (servletPath.startsWith(mapping.value()[0])) {
+        return controller;
+      }
+    }
+    return null;
   }
 }
 

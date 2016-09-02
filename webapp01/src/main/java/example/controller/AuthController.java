@@ -1,4 +1,4 @@
-package example.worker;
+package example.controller;
 
 import java.util.HashMap;
 
@@ -8,27 +8,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import example.dao.MemberDao;
 import example.vo.Member;
 
-@Component("/auth/login.do")
-public class LoginWorker implements Worker {
-
-  @Autowired
-  MemberDao memberDao;
+//@Component
+@Controller // 스프링에서 페이지 컨트롤러에게 붙이라고 만들어준 애노테이션이다.
+@RequestMapping("/auth/") // 이 페이지 컨트롤러의 기본 URL을 지정한다.
+public class AuthController {
   
-  @Override
-  public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    if (request.getMethod().equals("POST")) {
-      return doPost(request, response);
-    } else {
-      return doGet(request, response);
-    }
-  }
+  @Autowired MemberDao memberDao;
   
-  private String doGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  @RequestMapping("form")
+  public String form(HttpServletRequest request, HttpServletResponse response) throws Exception {
     Cookie[] cookies = request.getCookies();
     String email = "";
     String checked = "";
@@ -48,7 +42,8 @@ public class LoginWorker implements Worker {
     return "/auth/LoginForm.jsp";
   }
   
-  private String doPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  @RequestMapping("login")
+  public String login(HttpServletRequest request, HttpServletResponse response) throws Exception {
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String saveEmail = request.getParameter("saveEmail");
@@ -82,15 +77,13 @@ public class LoginWorker implements Worker {
       return "redirect:../board/list.do";
     }
   }
+  
+  @RequestMapping("logout")
+  public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    request.getSession().invalidate();
+    return "redirect:form.do";
+  }
 }
-
-
-
-
-
-
-
-
 
 
 
