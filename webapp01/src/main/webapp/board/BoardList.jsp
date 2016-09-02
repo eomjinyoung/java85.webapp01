@@ -20,7 +20,11 @@ String checked = (String)request.getAttribute("checked");
 <%
 List<Board> list = (List<Board>)request.getAttribute("list");
 for (Board board : list) {%>
-<%=board.getNo()%>, <a href='detail.do?no=<%=board.getNo()%>'><%=board.getTitle()%></a>, <%=board.getWriter()%>, <%=board.getCreatedDate()%>, <%=board.getViewCount()%><br>  
+  <%=board.getNo()%>, 
+  <a href='detail.do?no=<%=board.getNo()%>'><%=board.getTitle()%></a>, 
+  <%=board.getWriter()%>, 
+  <%=board.getCreatedDate()%>, 
+  <%=board.getViewCount()%><br>  
 <%}%>
 <jsp:include page="/footer"></jsp:include>
 </body>

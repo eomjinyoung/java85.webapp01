@@ -117,8 +117,8 @@
   => /webapp/auth/LoginForm.jsp
 
 # step18 (JSP를 다른 모든 서블릿(또는 워커)에 적용한다.)
-- BoardListWorker에 JSP 적용 =>/webapp/board/BoardList.jsp 파일 추가
-  
+- BoardListWorker에 JSP 적용 => /webapp/board/BoardList.jsp 파일 추가
+- BoardDetailWorker에 JSP 적용 => /webapp/board/BoardDetail.jsp 파일 추가  
 
 
 
