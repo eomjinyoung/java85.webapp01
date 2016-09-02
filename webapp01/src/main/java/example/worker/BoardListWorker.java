@@ -20,33 +20,26 @@ public class BoardListWorker implements Worker {
   
   @Override
   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    try {
-      int pageNo = 1;
-      int length = 5;
-      
-      if (request.getParameter("pageNo") != null) {
-        pageNo = Integer.parseInt(request.getParameter("pageNo"));
-      }
-      
-      if (request.getParameter("length") != null) {
-        length = Integer.parseInt(request.getParameter("length"));
-      }
-      
-      HashMap<String,Object> map = new HashMap<>();
-      map.put("startIndex", (pageNo - 1) * length);
-      map.put("length", length);
+    int pageNo = 1;
+    int length = 5;
     
-      List<Board> list = boardDao.selectList(map);
-      request.setAttribute("list", list);
-      
-      RequestDispatcher rd = request.getRequestDispatcher("/board/BoardList.jsp");
-      rd.forward(request, response);
-      
-    } catch (Exception e) {
-      request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
-      rd.forward(request, response);
+    if (request.getParameter("pageNo") != null) {
+      pageNo = Integer.parseInt(request.getParameter("pageNo"));
     }
+    
+    if (request.getParameter("length") != null) {
+      length = Integer.parseInt(request.getParameter("length"));
+    }
+    
+    HashMap<String,Object> map = new HashMap<>();
+    map.put("startIndex", (pageNo - 1) * length);
+    map.put("length", length);
+  
+    List<Board> list = boardDao.selectList(map);
+    request.setAttribute("list", list);
+    
+    RequestDispatcher rd = request.getRequestDispatcher("/board/BoardList.jsp");
+    rd.forward(request, response);
   }
 
 }

@@ -3,6 +3,7 @@ package example.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,8 +41,13 @@ public class DispatcherServlet extends HttpServlet {
     if (worker != null) {
       try {
         worker.execute(request, response);
+        
       } catch (Exception e) {
         e.printStackTrace();
+        request.setAttribute("error", e);
+        RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
+        rd.forward(request, response);
+        return;
       }
     } else {
       response.setContentType("text/html;charset=UTF-8");

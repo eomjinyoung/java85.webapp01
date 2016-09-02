@@ -78,7 +78,7 @@ public class LoginWorker implements Worker {
       // 로그인 실패한다면, 기존 세션도 무효화시킨다.
       session.invalidate();
       
-      response.setHeader("Refresh", "2;url=login");
+      response.setHeader("Refresh", "2;url=login.do");
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
       out.println("<html><head><title>로그인 결과</title></head>");

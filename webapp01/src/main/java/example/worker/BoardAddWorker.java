@@ -1,6 +1,5 @@
 package example.worker;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,19 +21,8 @@ public class BoardAddWorker implements Worker {
     board.setTitle(request.getParameter("title"));
     board.setContents(request.getParameter("contents"));
     
-    try {
-      boardDao.insert(board);
-      response.sendRedirect("list.do");
-      
-    } catch (Exception e) {
-      //ServletRequest 보관소에 오류 정보 저장
-      request.setAttribute("error", e);
-    
-      response.setHeader("Refresh", "3;url=list.do");
-      
-      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
-      rd.forward(request, response);
-    }
+    boardDao.insert(board);
+    response.sendRedirect("list.do");
   }
 
 }

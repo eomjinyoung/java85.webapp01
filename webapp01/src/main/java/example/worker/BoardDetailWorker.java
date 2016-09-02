@@ -17,20 +17,12 @@ public class BoardDetailWorker implements Worker {
   
   @Override
   public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    int no = Integer.parseInt(request.getParameter("no"));
+    Board board = boardDao.selectOne(no);
+    request.setAttribute("board", board);
     
-    try {
-      int no = Integer.parseInt(request.getParameter("no"));
-      Board board = boardDao.selectOne(no);
-      request.setAttribute("board", board);
-      
-      RequestDispatcher rd = request.getRequestDispatcher("/board/BoardDetail.jsp");
-      rd.forward(request, response);
-      
-    } catch (Exception e) {
-      request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
-      rd.forward(request, response);
-    }
+    RequestDispatcher rd = request.getRequestDispatcher("/board/BoardDetail.jsp");
+    rd.forward(request, response);
   }
 
 }
