@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import example.dao.MemberDao;
 import example.vo.Member;
@@ -43,13 +44,15 @@ public class AuthController {
   }
   
   @RequestMapping("login")
-  public String login(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    String email = request.getParameter("email");
-    String password = request.getParameter("password");
-    String saveEmail = request.getParameter("saveEmail");
+  public String login(
+      HttpServletResponse response,
+      HttpSession session,
+      @RequestParam(name="email") String email,
+      @RequestParam(name="password") String password,
+      @RequestParam(name="saveEmail", defaultValue="off") String saveEmail) throws Exception {
     
     Cookie cookie = new Cookie("email", email);
-    if (saveEmail == null) {
+    if (saveEmail.equals("off")) {
       cookie.setMaxAge(0); // 유효기간이 0이면 웹브라우저는 "email" 이름으로 저장된 쿠키를 삭제한다.
     } else {
       cookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키를 1주일 저장한다.
@@ -63,8 +66,6 @@ public class AuthController {
     paramMap.put("password", password);
     
     Member member = memberDao.selectOneByEmailAndPassword(paramMap);
-    
-    HttpSession session = request.getSession();
     
     if (member == null) {
       // 로그인 실패한다면, 기존 세션도 무효화시킨다.

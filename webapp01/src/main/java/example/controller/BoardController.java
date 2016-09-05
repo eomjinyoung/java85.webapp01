@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import example.dao.BoardDao;
 import example.vo.Board;
@@ -19,18 +20,11 @@ public class BoardController {
   @Autowired BoardDao boardDao;
   
   @RequestMapping("list")
-  public String list(HttpServletRequest request) throws Exception {
-    int pageNo = 1;
-    int length = 5;
-    
-    if (request.getParameter("pageNo") != null) {
-      pageNo = Integer.parseInt(request.getParameter("pageNo"));
-    }
-    
-    if (request.getParameter("length") != null) {
-      length = Integer.parseInt(request.getParameter("length"));
-    }
-    
+  public String list(
+      HttpServletRequest request,
+      @RequestParam(name="pageNo", defaultValue="1") int pageNo,
+      @RequestParam(name="length", defaultValue="5") int length) throws Exception {
+
     HashMap<String,Object> map = new HashMap<>();
     map.put("startIndex", (pageNo - 1) * length);
     map.put("length", length);
@@ -42,11 +36,14 @@ public class BoardController {
   }
   
   @RequestMapping("add")
-  public String add(HttpServletRequest request) throws Exception {
+  public String add(
+      @RequestParam(name="password") String password,
+      @RequestParam(name="title") String title,
+      @RequestParam(name="contents") String contents) throws Exception {
     Board board = new Board();
-    board.setPassword(request.getParameter("password"));
-    board.setTitle(request.getParameter("title"));
-    board.setContents(request.getParameter("contents"));
+    board.setPassword(password);
+    board.setTitle(title);
+    board.setContents(contents);
     
     boardDao.insert(board);
     
@@ -54,8 +51,9 @@ public class BoardController {
   }
   
   @RequestMapping("detail")
-  public String detail(HttpServletRequest request) throws Exception {
-    int no = Integer.parseInt(request.getParameter("no"));
+  public String detail(
+      HttpServletRequest request,
+      @RequestParam(name="no") int no) throws Exception {
     Board board = boardDao.selectOne(no);
     request.setAttribute("board", board);
     
@@ -63,12 +61,17 @@ public class BoardController {
   }
   
   @RequestMapping("update")
-  public String update(HttpServletRequest request) throws Exception {
+  public String update(
+      @RequestParam(name="no") int no,
+      @RequestParam(name="password") String password,
+      @RequestParam(name="title") String title,
+      @RequestParam(name="contents") String contents) throws Exception {
+    
     Board board = new Board();
-    board.setNo(Integer.parseInt(request.getParameter("no")));
-    board.setTitle(request.getParameter("title"));
-    board.setContents(request.getParameter("contents"));
-    board.setPassword(request.getParameter("password"));
+    board.setNo(no);
+    board.setTitle(title);
+    board.setContents(contents);
+    board.setPassword(password);
     
     HashMap<String,Object> paramMap = new HashMap<>();
     paramMap.put("no", board.getNo());
@@ -84,10 +87,11 @@ public class BoardController {
   }
   
   @RequestMapping("delete")
-  public String delete(HttpServletRequest request) throws Exception {
-    int no = Integer.parseInt(request.getParameter("no"));
-    boardDao.delete(no);
+  public String delete(
+      HttpServletRequest request,
+      @RequestParam(name="no") int no) throws Exception {
     
+    boardDao.delete(no);
     return "redirect:list.do";
   }
 }

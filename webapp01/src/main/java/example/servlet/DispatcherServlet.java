@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @WebServlet("*.do")
@@ -94,6 +95,9 @@ public class DispatcherServlet extends HttpServlet {
     // 그 파라미터에 해당하는 값을 찾아 바구니에 저장한다.
     Class<?> paramType = null;
     Object paramValue = null;
+    RequestParam paramAnno = null; 
+    String paramName = null;
+    
     for (Parameter param : params) {
       paramType = param.getType();
       
@@ -108,6 +112,22 @@ public class DispatcherServlet extends HttpServlet {
           paramValues.add(response);
         } else if (paramType.isInstance(request.getSession())) {
           paramValues.add(request.getSession());
+        } else if (paramType == int.class) {
+          paramAnno = param.getAnnotation(RequestParam.class);
+          paramName = paramAnno.name();
+          if (request.getParameter(paramName) != null) {
+            paramValues.add(Integer.parseInt(request.getParameter(paramName)));
+          } else {
+            paramValues.add(Integer.parseInt(paramAnno.defaultValue()));
+          }
+        } else if (paramType == String.class) {
+          paramAnno = param.getAnnotation(RequestParam.class);
+          paramName = paramAnno.name();
+          if (request.getParameter(paramName) != null) {
+            paramValues.add(request.getParameter(paramName));
+          } else {
+            paramValues.add(paramAnno.defaultValue());
+          }
         } else { // 그것도 아니면, 그런 파라미터 값은 없는데.... 못주겠네.. 그럼 null...
           paramValues.add(null);
         }
