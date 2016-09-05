@@ -22,7 +22,7 @@ public class AuthController {
   @Autowired MemberDao memberDao;
   
   @RequestMapping("form")
-  public String form(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String form(HttpServletRequest request) throws Exception {
     Cookie[] cookies = request.getCookies();
     String email = "";
     String checked = "";
@@ -79,8 +79,8 @@ public class AuthController {
   }
   
   @RequestMapping("logout")
-  public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    request.getSession().invalidate();
+  public String logout(HttpSession session) throws Exception {
+    session.invalidate();
     return "redirect:form.do";
   }
 }

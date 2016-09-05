@@ -3,6 +3,8 @@ package example.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -36,6 +38,11 @@ public class DispatcherServlet extends HttpServlet {
   
   @Override
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    //예) http://localhost:8080/web02/board/list.do?pageNo=2
+    //- 서버 루트 : /
+    //- 웹 애플리케이션 경로(컨텍스트 경로): /web02
+    //- 서블릿 경로 : /board/list.do
+    //- 쿼리스트링(Query String): ?pageNo=2
     String servletPath = request.getServletPath();
 
     Object pageController = findPageController(servletPath);
@@ -46,7 +53,10 @@ public class DispatcherServlet extends HttpServlet {
     
     if (requestHandler != null) {
       try {
-        String url = (String)requestHandler.invoke(pageController, request, response);
+        // 메서드에 전달할 파라미터 준비하기
+        Object[] params = prepareRequestHandlerParameters(requestHandler, request, response);
+        
+        String url = (String)requestHandler.invoke(pageController, params);
         
         if (url.startsWith("redirect:")) {
           response.sendRedirect(url.substring(9)); // url에서 "redirect:" 접두어 제거한다.
@@ -70,6 +80,44 @@ public class DispatcherServlet extends HttpServlet {
       out.println("<h1>오류!</h1>");
       out.println("<p>해당 URL을 처리할 수 없습니다.</p>");
       out.println("</body></html>");
+    }
+  }
+
+  private Object[] prepareRequestHandlerParameters(
+      Method requestHandler, HttpServletRequest request, HttpServletResponse response) {
+    // 메서드를 호출할 때 넘겨 줄 값을 담을 바구니 준비
+    ArrayList<Object> paramValues = new ArrayList<>();
+    
+    // 메서드가 어떤 값을 요구하는지 파라미터 정보를 알아낸다.
+    Parameter[] params = requestHandler.getParameters();
+    
+    // 그 파라미터에 해당하는 값을 찾아 바구니에 저장한다.
+    Class<?> paramType = null;
+    Object paramValue = null;
+    for (Parameter param : params) {
+      paramType = param.getType();
+      
+      try {
+        // 먼저 Spring IoC 컨테이너에서 파라미터 값을 찾는다.
+        paramValue = applicationContext.getBean(paramType);
+        paramValues.add(paramValue); // 있다면 바구니에 저장한다.
+      } catch (Exception e) {
+        if (paramType.isInstance(request)) { // 혹시 그 파라미터가 HttpServletReuqest 이냐?
+          paramValues.add(request);
+        } else if (paramType.isInstance(response)) { // 아니면 HttpServletResponse 이냐?
+          paramValues.add(response);
+        } else if (paramType.isInstance(request.getSession())) {
+          paramValues.add(request.getSession());
+        } else { // 그것도 아니면, 그런 파라미터 값은 없는데.... 못주겠네.. 그럼 null...
+          paramValues.add(null);
+        }
+      }
+    }
+    
+    if (paramValues.size() > 0) {
+      return paramValues.toArray();
+    } else {
+      return null;
     }
   }
 

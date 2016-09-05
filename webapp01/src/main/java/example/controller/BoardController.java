@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ public class BoardController {
   @Autowired BoardDao boardDao;
   
   @RequestMapping("list")
-  public String list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String list(HttpServletRequest request) throws Exception {
     int pageNo = 1;
     int length = 5;
     
@@ -43,7 +42,7 @@ public class BoardController {
   }
   
   @RequestMapping("add")
-  public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String add(HttpServletRequest request) throws Exception {
     Board board = new Board();
     board.setPassword(request.getParameter("password"));
     board.setTitle(request.getParameter("title"));
@@ -55,7 +54,7 @@ public class BoardController {
   }
   
   @RequestMapping("detail")
-  public String detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String detail(HttpServletRequest request) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     Board board = boardDao.selectOne(no);
     request.setAttribute("board", board);
@@ -64,7 +63,7 @@ public class BoardController {
   }
   
   @RequestMapping("update")
-  public String update(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String update(HttpServletRequest request) throws Exception {
     Board board = new Board();
     board.setNo(Integer.parseInt(request.getParameter("no")));
     board.setTitle(request.getParameter("title"));
@@ -85,7 +84,7 @@ public class BoardController {
   }
   
   @RequestMapping("delete")
-  public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String delete(HttpServletRequest request) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     boardDao.delete(no);
     
