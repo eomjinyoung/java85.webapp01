@@ -6,37 +6,51 @@
   version="3.1"
   metadata-complete="false">
 
-  <!-- 리스너가 사용할 파라미터 등록 
-       이 파라미터는 글로벌 파라미터이다.
-       즉 리스너 뿐만 아니라 필터나 서블릿도 사용할 수 있다.-->
+  <!--  
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <!-- 스프링에서 제공하는 리스너를 사용할 때는 
-         설정 파일의 경로 앞에 classpath: 를 지정해야 한다. -->
     <param-value>classpath:conf/application-context.xml</param-value>
   </context-param>
   
-  <!-- 리스너 등록 -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-
-  <!-- 필터 등록 -->
+  -->
+  
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <!-- 필터에서 사용할 파라미터를 설정한다. -->
     <init-param> 
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   
-  <!-- 필터를 적용할 URL 지정 -->
   <filter-mapping>
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>*</url-pattern>
   </filter-mapping>
+  
+  <!-- *.do 요청을 처리할 프런트 컨트롤러 등록 -->
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 만약 DispatcherServlet이 사용할 설정파일을 다음 규칙에 따라 만든다면,  
+         init-param로 지정할 필요가 없다.
+         규칙: /WEB-INF/서블릿별명-servlet.xml  -->
+    <!--  
+    <init-param> 
+      <param-name>contextConfigLocation</param-name> 
+      <param-value>/WEB-INF/dispatcher-servlet.xml</param-value> 
+    </init-param> 
+    -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
 
 </web-app>
 

@@ -170,9 +170,16 @@
 - 페이지 컨트롤러의 요청 핸들러 변경
   => 요청 파라미터 값을 직접 받는다.
     
-
-
-
+# step25 (스프링 WebMVC의 DispatcherServlet 적용)
+- 기존의 DispatcherServlet 클래스 삭제
+- web.xml 변경
+  => 기존의 ContextLoaderListener 설정을 주석으로 막는다.
+  => 프런트 컨트롤러를 스프링 WebMVC의 DispatcherServlet으로 변경
+- DispatcherServlet이 사용할 스프링 설정 파일을 만든다.
+  => /WEB-INF/dispatcher-servlet.xml 파일 생성
+  => /WEB-INF/jdbc.properties 파일 
+- 기존 파일 제거
+  => /src/main/resources/conf/* 파일 및 폴더 제거
 
 
 
