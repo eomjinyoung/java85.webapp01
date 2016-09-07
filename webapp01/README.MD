@@ -181,7 +181,8 @@
 - 기존 파일 제거
   => /src/main/resources/conf/* 파일 및 폴더 제거
 
-
+# step26 (스프링의 기능을 활용하여 Page Controller 변경)
+- 기존의 페이지 컨트롤러를 변경
 
 
 
