@@ -35,6 +35,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.2.RELEASE'
   compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.2.RELEASE'
 
+  compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 
   // 개발하는 동안 라이브러리를 사용하고, 개발이 끝난 후 배치에서 제외해야 하는 라이브러리는
   // providedCompile 옵션을 사용하라!

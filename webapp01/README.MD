@@ -184,7 +184,10 @@
 # step26 (스프링의 기능을 활용하여 Page Controller 변경)
 - 기존의 페이지 컨트롤러를 변경
  
-
+# step27 (JSP 파일에 JSTL & EL 적용)
+- JSTL 의존 라이브러리 추가 
+- /webapp/auth/*.jsp 변경 
+  /webapp/board/*.jsp 변경
  
 
 
