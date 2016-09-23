@@ -210,7 +210,13 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
   => /WEB-INF/json-servlet.xml 
   => /WEB-INF/dispatcher-servlet.xml에서 json 패키지의 클래스를 제외한다.
 
-
+[3단계]
+1) 페이지 컨트롤러를 JSON 문자열을 리턴하도록 변경한다.
+   => google-gson라이브러리 추가
+   
+[4단계]
+1) boardApp.html 생성
+   => AJAX를 이용하여 JSON 문자열을 받은 다음 테이블을 동적으로 갱신한다.
 
   
 
