@@ -188,8 +188,20 @@
 - JSTL 의존 라이브러리 추가 
 - /webapp/auth/*.jsp 변경 
   /webapp/board/*.jsp 변경
- 
 
+# step28 (JSON 데이터를 리턴하는 페이지 컨트롤러를 생성)
+[1단계]
+기존의 프론트 컨트로러가 관리하는 객체 중에서 
+Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기반이 되는 객체를
+분리하여 관리한다.
+  => ContextLoaderListener를 추가한다!
+     1) web.xml 파일에 리스너 태그 추가
+     2) application-context.xml 파일을 /WEB-INF/ 폴더에 둔다.
+        => 이 파일에는 DAO, Mybatis, Database, Service 객체만 설정한다. 
+  => 기존 DispatcherServlet의 스프링 설정 파일에서 
+     위에서 관리하기로 한 객체를 제외시킨다. 
+
+[2단계]
 
 
 
