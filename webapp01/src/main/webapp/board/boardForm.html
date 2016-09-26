@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시물 입력폼</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<style>
+.container {
+  width: 600px;
+}
+</style>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="container">     
+<div style='background-color:navy;font-size:150%;color:white;position:relative;'>
+  자바85기^^
+
+  <div style='position:absolute;right:0px;top:0px;font-size:15px;'>
+    <a href='/webapp01/auth/form.do'
+       class="btn btn-success btn-xs">로그인</a></div> 
+
+</div>
+
+<h1>게시물 입력폼</h1>
+<form class="form-horizontal">
+<div class="form-group">
+  <label for="title" class="col-sm-2 control-label">제목</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="title" placeholder="제목입니다.">
+  </div>
+</div>
+<div class="form-group">
+  <label for="contents" class="col-sm-2 control-label">내용</label>
+  <div class="col-sm-10">
+    <textarea id="contents" class="form-control" 
+              cols="50" rows="10" placeholder="내용입니다."></textarea>
+  </div>
+</div>
+<div class="form-group">
+  <label for="password" class="col-sm-2 control-label">암호</label>
+  <div class="col-sm-10">
+    <input type="password" id="password" class="form-control" 
+           placeholder="암호입력">
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button id="addBtn" type="button" class="btn btn-default">등록</button>
+  </div>
+</div>
+</form>
+
+<p style='background-color:yellow; text-align:center;'>
+  이 예제는 자바85기에서 사용한 것입니다.2</p>
+  
+</div><!-- div.container -->
+
+<script>
+
+document.querySelector("#addBtn").addEventListener("click", function(event) {
+	var board = {
+	  title: document.querySelector("#title").value,
+	  contents: document.querySelector("#contents").value,
+	  password: document.querySelector("#password").value
+	}
+	ajaxAddBoard(board)
+})
+
+function ajaxAddBoard(board) {
+	  var xhr = new XMLHttpRequest();
+	  xhr.onreadystatechange = function(result) {
+	    if (xhr.readyState != 4)
+	      return;
+	    
+	    if (xhr.status != 200) {
+	      alert("서버에 잘못 요청했습니다.")
+	      return;
+	    }
+	    
+	    var result = JSON.parse(xhr.responseText)
+	    /* result 예)
+	       {
+	    	   state : "success" or "fail",
+	    	   data : 결과 데이터 
+	       }
+	     */
+	    if (result.state != "success") {
+	    	 console.log(result.data)
+	    	 alert("등록 실패입니다.")
+	    	 return
+	    }
+	    
+	    window.location.href = "boardApp.html"
+	  }
+	  xhr.open("POST", "add.json", true)
+	  
+	  // POST 요청은 헤더를 추가해야 한다.
+	  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
+	  
+	  // POST 요청은 서버에 데이터를 보낼 때 send()의 파라미터로 보낸다.
+	  var params = "title=" + encodeURIComponent(board.title) + 
+	               "&contents=" + encodeURIComponent(board.contents) + 
+	               "&password=" + encodeURIComponent(board.password)
+	  
+	  // 웹브라우저인 경우 자동으로 데이터에 대해 URL인코딩을 수행한다.
+	  // 그런데 자바스크립트 AJAX에서는 개발자가 직접 URL인코딩을 수행해야 한다.
+	  xhr.send(params) 
+}
+
+
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+

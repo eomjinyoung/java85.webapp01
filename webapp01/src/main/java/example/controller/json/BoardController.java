@@ -60,10 +60,22 @@ public class BoardController {
         HttpStatus.OK);
   }
   
-  @RequestMapping("add")
+  @RequestMapping(path="add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseBody
   public String add(Board board) throws Exception {
-    boardDao.insert(board);
-    return "redirect:list.do";
+    // 성공하든 실패하든 클라이언트에게 데이터를 보내야 한다.
+    HashMap<String,Object> result = new HashMap<>();
+    
+    try {
+      boardDao.insert(board);
+      result.put("state", "success");
+      
+    } catch (Exception e) {
+      result.put("state", "fail");
+      result.put("data", e.getMessage());
+    }
+    
+    return new Gson().toJson(result);
   }
   
   @RequestMapping("detail")
