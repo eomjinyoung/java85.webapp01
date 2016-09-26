@@ -69,17 +69,26 @@ function loadTable() {
     for (var i in arr) {
     	contents += "<tr>" +
     	  "<td>" + arr[i].no + "</td>" + 
-    	  "<td><a href='detail.do?no=" + arr[i].no + "'>" + arr[i].title + "</a></td>" +
+    	  "<td><a class='titleLink' href='#' data-no='" + arr[i].no + "'>" + arr[i].title + "</a></td>" +
     	  "<td>" + arr[i].createdDate + "</td>" +
     	  "<td>" + arr[i].viewCount + "</td>" + 
     	  "</tr>"
     }
     
     document.querySelector("#boardTable tbody").innerHTML = contents;
+    
+    // tr 태그를 추가한 후에 제목에 대해 click 리스너를 추가한다.
+    var aTags = document.querySelectorAll(".titleLink")
+    for (var i = 0; i < aTags.length; i++) {
+	    aTags[i].onclick = function(event) {
+	    	//alert(this.getAttribute("data-no")) // 태그 고유의 프로퍼티가 아니기 때문에 getAttribute() 사용
+	    	window.location.href = "boardForm.html?no=" + this.getAttribute("data-no")
+	    }
+    }
   }
-  //xhr.open("GET", "list.json", true)
+  xhr.open("GET", "list.json", true)
   //xhr.open("GET", "test.jsp", true)
-  xhr.open("GET", "test.txt", true)
+  //xhr.open("GET", "test.txt", true)
   xhr.send() 
 }
 

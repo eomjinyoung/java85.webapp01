@@ -78,11 +78,26 @@ public class BoardController {
     return new Gson().toJson(result);
   }
   
-  @RequestMapping("detail")
-  public String detail(int no, Model model) throws Exception {
-    Board board = boardDao.selectOne(no);
-    model.addAttribute("board", board);
-    return "/board/BoardDetail.jsp";
+  @RequestMapping(path="detail", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseBody
+  public String detail(int no) throws Exception {
+    HashMap<String,Object> result = new HashMap<>();
+    
+    try {
+      Board board = boardDao.selectOne(no);
+      
+      if (board == null) 
+        throw new Exception("해당 번호의 게시물이 존재하지 않습니다.");
+      
+      result.put("state", "success");
+      result.put("data", board);
+      
+    } catch (Exception e) {
+      result.put("state", "fail");
+      result.put("data", e.getMessage());
+    }
+    
+    return new Gson().toJson(result);
   }
   
   @RequestMapping("update")

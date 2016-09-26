@@ -63,6 +63,12 @@
 
 <script>
 
+// URL에 no 파라미터 값이 넘어오면 조회 모드로 동작해야 한다.
+if (location.search.startsWith("?")) { // 예) ?no=xxx
+	  var no = location.search.split("=")[1];
+	  ajaxLoadBoard(no)
+}
+
 document.querySelector("#addBtn").addEventListener("click", function(event) {
 	var board = {
 	  title: document.querySelector("#title").value,
@@ -113,6 +119,39 @@ function ajaxAddBoard(board) {
 	  xhr.send(params) 
 }
 
+function ajaxLoadBoard(no) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(result) {
+      if (xhr.readyState != 4)
+        return;
+      
+      if (xhr.status != 200) {
+        alert("서버에 잘못 요청했습니다.")
+        return;
+      }
+      
+      var result = JSON.parse(xhr.responseText)
+      /* result 예)
+         {
+           state : "success" or "fail",
+           data : 결과 데이터 
+         }
+       */
+      if (result.state != "success") {
+         console.log(result.data)
+         alert("조회 실패입니다.")
+         return
+      }
+      
+      // 서버에서 받은 데이터로 폼을 채운다.
+      document.querySelector("#title").value = result.data.title;
+      document.querySelector("#contents").value = result.data.contents;
+    }
+    
+    //GET 요청은 반드시 파라미터 값을 URL에 포함시켜 보내야 한다.
+    xhr.open("GET", "detail.json?no=" + no, true)
+    xhr.send() 
+}
 
 </script>
 
