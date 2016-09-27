@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,14 +29,22 @@ public class BoardController {
   public String list(
       @RequestParam(defaultValue="1") int pageNo,
       @RequestParam(defaultValue="5") int length) throws Exception {
-
-    HashMap<String,Object> map = new HashMap<>();
-    map.put("startIndex", (pageNo - 1) * length);
-    map.put("length", length);
-  
-    List<Board> list = boardDao.selectList(map);
     
-    return new Gson().toJson(list); // List 객체 ---> JSON 문자열 
+    HashMap<String,Object> result = new HashMap<>();
+    try {
+      HashMap<String,Object> map = new HashMap<>();
+      map.put("startIndex", (pageNo - 1) * length);
+      map.put("length", length);
+      
+      List<Board> list = boardDao.selectList(map);
+      result.put("state", "success");
+      result.put("data", list);
+      
+    } catch (Exception e) {
+      result.put("state", "fail");
+      result.put("data", e.getMessage());
+    }
+    return new Gson().toJson(result);
   }
   
   @RequestMapping("list2")
@@ -100,23 +107,43 @@ public class BoardController {
     return new Gson().toJson(result);
   }
   
-  @RequestMapping("update")
+  @RequestMapping(path="update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseBody
   public String update(Board board) throws Exception {
-    HashMap<String,Object> paramMap = new HashMap<>();
-    paramMap.put("no", board.getNo());
-    paramMap.put("password", board.getPassword());
-    
-    if (boardDao.selectOneByPassword(paramMap) == null) {
-      throw new Exception("해당 게시물이 없거나 암호가 일치하지 않습니다!");
+    HashMap<String,Object> result = new HashMap<>();
+    try {
+      HashMap<String,Object> paramMap = new HashMap<>();
+      paramMap.put("no", board.getNo());
+      paramMap.put("password", board.getPassword());
+      
+      if (boardDao.selectOneByPassword(paramMap) == null) {
+        throw new Exception("해당 게시물이 없거나 암호가 일치하지 않습니다!");
+      }
+      boardDao.update(board);
+      result.put("state", "success");
+      
+    } catch (Exception e) {
+      result.put("state", "fail");
+      result.put("data", e.getMessage());
     }
-    boardDao.update(board);
-    return "redirect:list.do";
+    
+    return new Gson().toJson(result);
   }
   
-  @RequestMapping("delete")
+  @RequestMapping(path="delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseBody
   public String delete(int no) throws Exception {
-    boardDao.delete(no);
-    return "redirect:list.do";
+    HashMap<String,Object> result = new HashMap<>();
+    try {
+      if (boardDao.delete(no) == 0) {
+        throw new Exception("해당 게시물이 없거나 삭제 실패입니다.");
+      }
+      result.put("state", "success");
+    } catch (Exception e) {
+      result.put("state", "fail");
+      result.put("data", e.getMessage());
+    }
+    return new Gson().toJson(result);
   }
 }
 

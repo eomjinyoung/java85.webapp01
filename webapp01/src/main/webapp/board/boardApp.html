@@ -63,10 +63,15 @@ function loadTable() {
       return;
     }
     
-    var arr = JSON.parse(xhr.responseText)
+    var result = JSON.parse(xhr.responseText)
+    
+    if (result.state != "success") {
+    	alert("서버에서 데이터를 가져오는데 실패하였습니다.")
+    	return
+    }
     
     var contents = ""
-    
+    var arr = result.data
     for (var i in arr) {
     	contents += "<tr>" +
     	  "<td>" + arr[i].no + "</td>" + 
