@@ -217,7 +217,10 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 [4단계]
 1) boardApp.html 생성
    => AJAX를 이용하여 JSON 문자열을 받은 다음 테이블을 동적으로 갱신한다.
-
+2) boardForm.html 생성
+   => AJAX를 이용하여 게시물 등록, 조회, 변경, 삭제 처리
+3) example.controller.json.BoardController 클래스 변경 
+ 
   
 
 
