@@ -11,6 +11,8 @@
 .container {
   width: 600px;
 }
+
+
 </style>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -29,6 +31,12 @@
 
 <h1>게시물 입력폼</h1>
 <form class="form-horizontal">
+<div class="form-group my-view">
+  <label for="no" class="col-sm-2 control-label">번호</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="no" readonly>
+  </div>
+</div>
 <div class="form-group">
   <label for="title" class="col-sm-2 control-label">제목</label>
   <div class="col-sm-10">
@@ -49,9 +57,24 @@
            placeholder="암호입력">
   </div>
 </div>
+<div class="form-group my-view">
+  <label class="col-sm-2 control-label">등록일</label>
+  <div class="col-sm-10">
+    <p id="createdDate" class="form-control-static"></p>
+  </div>
+</div>
+<div class="form-group my-view">
+  <label class="col-sm-2 control-label">조회수</label>
+  <div class="col-sm-10">
+    <p id="viewCount" class="form-control-static"></p>
+  </div>
+</div>
 <div class="form-group">
   <div class="col-sm-offset-2 col-sm-10">
-    <button id="addBtn" type="button" class="btn btn-default">등록</button>
+    <button id="addBtn" type="button" class="btn btn-default my-new">등록</button>
+    <button id="updateBtn" type="button" class="btn btn-default my-view">변경</button>
+    <button id="cancelBtn" type="button" class="btn btn-default"
+            onclick="location.href='boardApp.html'">취소</button>
   </div>
 </div>
 </form>
@@ -67,6 +90,15 @@
 if (location.search.startsWith("?")) { // 예) ?no=xxx
 	  var no = location.search.split("=")[1];
 	  ajaxLoadBoard(no)
+	  var tags = document.querySelectorAll(".my-new")
+    for (var i = 0; i < tags.length; i++) {
+      tags[i].style.display = "none"
+    }
+} else {
+	  var tags = document.querySelectorAll(".my-view")
+	  for (var i = 0; i < tags.length; i++) {
+		  tags[i].style.display = "none"
+	  }
 }
 
 document.querySelector("#addBtn").addEventListener("click", function(event) {
@@ -144,8 +176,11 @@ function ajaxLoadBoard(no) {
       }
       
       // 서버에서 받은 데이터로 폼을 채운다.
+      document.querySelector("#no").value = result.data.no;
       document.querySelector("#title").value = result.data.title;
       document.querySelector("#contents").value = result.data.contents;
+      document.querySelector("#createdDate").textContent = result.data.createdDate2;
+      document.querySelector("#viewCount").textContent = result.data.viewCount;
     }
     
     //GET 요청은 반드시 파라미터 값을 URL에 포함시켜 보내야 한다.

@@ -8,9 +8,11 @@ package example.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Board implements Serializable {
   private static final long serialVersionUID = 1L;
+  static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
   
   protected int no;
   protected String title;
@@ -19,6 +21,7 @@ public class Board implements Serializable {
   protected Date createdDate; // 이제 java.sql.Date 타입으로 날짜 정보를 제대로 다뤄보자!
   protected int viewCount;
   protected transient String password; // 보안상 암호는 직렬화 대상에서 제외하는 것이 좋다.
+  protected String createdDate2; // 클라이언트가 사용할 문자열 형식(yyyy-MM-dd)의 날짜 
   
   public int getNo() {
     return no;
@@ -49,6 +52,14 @@ public class Board implements Serializable {
   }
   public void setCreatedDate(Date createdDate) {
     this.createdDate = createdDate;
+    this.createdDate2 = format.format(createdDate);
+  }
+  public String getCreatedDate2() {
+    return createdDate2;
+  }
+  public void setCreatedDate2(String str) {
+    this.createdDate = Date.valueOf(str);
+    this.createdDate2 = str;
   }
   public int getViewCount() {
     return viewCount;
