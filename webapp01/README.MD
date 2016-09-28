@@ -221,7 +221,8 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
    => AJAX를 이용하여 게시물 등록, 조회, 변경, 삭제 처리
 3) example.controller.json.BoardController 클래스 변경 
  
-  
-
+# step29 (로그인 + AJAX + JSON)  
+1) AuthController 에 AJAX 적용
+2) LoginForm.html 생성
 
 
