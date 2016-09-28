@@ -58,6 +58,9 @@
 </div>
 
 <script>
+
+ajaxLogout() // 로그아웃을 무조건 실행
+
 document.querySelector("#loginBtn").addEventListener("click", function(event) {
 	var user = {
     email: document.querySelector("#email").value,
@@ -98,6 +101,26 @@ function ajaxLogin(user) {
 
     xhr.send(params) 
 }
+
+function ajaxLogout(user) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(result) {
+      if (xhr.readyState != 4)
+        return;
+      
+      if (xhr.status != 200) {
+        console.log("서버 요청 오류입니다.")
+        return;
+      }
+      
+      var result = JSON.parse(xhr.responseText)
+      if (result.state != "success")
+        console.log("로그아웃 실패입니다.")
+    }
+    xhr.open("GET", "logout.json", true)
+    xhr.send() 
+}
+
 </script>
 
 

@@ -30,6 +30,7 @@ public class AuthController {
   @RequestMapping(path="login", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public String login(
+      HttpSession session, /* 세션이 무효화된 이후에 세션을 자동 생성하도록 강제한다.*/
       HttpServletResponse response,
       String email,
       String password,

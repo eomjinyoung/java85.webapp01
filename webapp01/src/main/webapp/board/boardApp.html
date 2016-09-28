@@ -22,13 +22,15 @@
   자바85기^^
 
   <div style='position:absolute;right:0px;top:0px;font-size:15px;'>
-    <a href='/webapp01/auth/form.do'
-       class="btn btn-success btn-xs">로그인</a></div> 
-
+    <span id="userName" class="my-login"></span>
+    <a id="loginBtn" href='#' class="btn btn-success btn-xs my-logout">로그인</a>
+    <a id="logoutBtn" href='#' class="btn btn-success btn-xs my-login">로그아웃</a>
+  </div>
+        
 </div>
 
 
-<h1>게시물 목록조회2</h1>
+<h1>게시물 목록조회</h1>
 <p><button type="button" class="btn btn-primary btn-sm" 
            onclick="location.href='boardForm.html'">새 글</button></p>
 
@@ -45,16 +47,28 @@
 </table>
       
 <p style='background-color:yellow; text-align:center;'>
-  이 예제는 자바85기에서 사용한 것입니다.2</p>
+  이 예제는 자바85기에서 사용한 것입니다.</p>
 </div>
 
 <script>
 
-loadTable()
+// 로그인 유저 정보 가져오기
+ajaxLoginUser()
 
-function loadTable() {
+// 게시물 목록 가져오기
+ajaxBoardList()
+
+document.querySelector("#loginBtn").onclick = function(event) {
+	location.href = "../auth/authApp.html"
+}
+
+document.querySelector("#logoutBtn").onclick = function(event) {
+	location.href = "../auth/authApp.html"
+}
+
+function ajaxBoardList() {
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function(result) {
+  xhr.onreadystatechange = function() {
     if (xhr.readyState != 4)
       return;
     
@@ -97,6 +111,37 @@ function loadTable() {
   //xhr.open("GET", "test.txt", true)
   xhr.send() 
 }
+
+function ajaxLoginUser() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState != 4)
+        return;
+      
+      if (xhr.status != 200) {
+        alert("서버에 잘못 요청했습니다.")
+        return;
+      }
+      
+      var result = JSON.parse(xhr.responseText)
+      if (result.state != "success") { // 로그아웃 상태일 경우 로그인 상태와 관련된 태그를 감춘다.
+         var tags = document.querySelectorAll('.my-login')
+         for (var i = 0; i < tags.length; i++) 
+        	 tags[i].style.display = "none";
+         return
+      }
+      
+      var tags = document.querySelectorAll('.my-logout')
+      for (var i = 0; i < tags.length; i++) 
+        tags[i].style.display = "none";
+      
+      document.querySelector("#userName").textContent = result.data.name;
+    }
+    
+    xhr.open("GET", "../auth/loginUser.json", true)
+    xhr.send() 
+}
+
 
 </script>
 

@@ -127,7 +127,7 @@ document.querySelector("#deleteBtn").addEventListener("click", function(event) {
 
 function ajaxAddBoard(board) {
 	  var xhr = new XMLHttpRequest();
-	  xhr.onreadystatechange = function(result) {
+	  xhr.onreadystatechange = function() {
 	    if (xhr.readyState != 4)
 	      return;
 	    
@@ -168,7 +168,7 @@ function ajaxAddBoard(board) {
 
 function ajaxLoadBoard(no) {
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(result) {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState != 4)
         return;
       
@@ -205,7 +205,7 @@ function ajaxLoadBoard(no) {
 
 function ajaxUpdateBoard(board) {
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(result) {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState != 4)
         return;
       
@@ -234,7 +234,7 @@ function ajaxUpdateBoard(board) {
 
 function ajaxDeleteBoard(no) {
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(result) {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState != 4)
         return;
       
