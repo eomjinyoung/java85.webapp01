@@ -48,6 +48,10 @@ public class AuthController {
       }
       response.addCookie(cookie);
       
+      response.addCookie(new Cookie("test", "okok"));
+      cookie = new Cookie("test2", "nono");
+      cookie.setMaxAge(120);
+      response.addCookie(cookie);
       
       HashMap<String,Object> paramMap = new HashMap<>();
       paramMap.put("email", email);

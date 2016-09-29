@@ -59,6 +59,8 @@
 
 <script>
 
+init() // 화면을 준비시킨다.
+
 ajaxLogout() // 로그아웃을 무조건 실행
 
 document.querySelector("#loginBtn").addEventListener("click", function(event) {
@@ -121,6 +123,30 @@ function ajaxLogout(user) {
     xhr.send() 
 }
 
+function init() {
+	var cookieMap = cookieToObject()
+	
+	//if (cookieMap["email"]) { // cookieMap 객체에 email 이름으로 저장된 값이 있는가?
+  if ("email" in cookieMap) { // cookieMap 객체에 email 이라는 이름의 프로퍼티가 있는가?
+		document.querySelector("#email").value = cookieMap["email"]
+	  document.querySelector("#saveEmail").checked = true
+	}
+}
+
+function cookieToObject() {
+	var cookies = document.cookie.split(";")
+	var obj = {}
+	
+	if (cookies.length == 0) 
+		return obj;
+	
+  cookies.forEach(function(data) {
+	  var cookie = data.trim().split("=")
+	  obj[cookie[0]] = cookie[1].replace(/\"/gi, "")
+  });
+    
+	return obj
+}
 </script>
 
 
