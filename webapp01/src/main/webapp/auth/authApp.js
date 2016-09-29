@@ -9,34 +9,22 @@ document.querySelector("#loginBtn").addEventListener("click", function(event) {
 });
 
 function ajaxLogin(user) {
-	  var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(result) {
-      if (xhr.readyState != 4)
-        return;
-      
-      if (xhr.status != 200) {
-        alert("서버에 잘못 요청했습니다.")
-        return;
-      }
-      
-      var result = JSON.parse(xhr.responseText)
-      if (result.state != "success") {
-         console.log(result.data)
-         alert("로그인 실패입니다.\n이메일 또는 암호를 확인하세요.")
-         return
-      }
-      
-      window.location.href = "../board/boardApp.html"
-    }
-    xhr.open("POST", "login.json", true)
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
-    
-    var params = "email=" + user.email + "&password=" + user.password;
-    if (user.saveEmail == true) {
-    	params += "&saveEmail=on"
-    }
-
-    xhr.send(params) 
+	ajax({
+		url: "login.json",
+		method: "POST",
+		dataType: "json",
+		data: user,
+		success: function(result) {
+		    if (result.state != "success") {
+	            alert("로그인 실패입니다.\n이메일 또는 암호를 확인하세요.")
+	            return
+	        }
+	        window.location.href = "../board/boardApp.html"
+		},
+		error: function(msg) {
+			alert(msg)
+		}
+	})
 }
 
 function ajaxLogout(user) {

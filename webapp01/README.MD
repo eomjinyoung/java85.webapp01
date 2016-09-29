@@ -232,4 +232,8 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
    boardApp.html -> boardApp.html + boardApp.js
    boardForm.html -> boardForm.html + boardForm.js
 
+# step31 (자주 사용하는 자바스크립트 코드를 라이브러리화)
+1) AJAX 요청 코드를 공통 함수로 만든다.
+   function ajax({요청정보}) {}
+   => webapp/js/bit.js에 공통 함수를 놓는다.
    

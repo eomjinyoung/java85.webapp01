@@ -34,14 +34,14 @@ public class AuthController {
       HttpServletResponse response,
       String email,
       String password,
-      String saveEmail, 
+      boolean saveEmail, 
       Model model,
       SessionStatus sessionStatus) throws Exception {
     
     HashMap<String,Object> result = new HashMap<>();
     try {
       Cookie cookie = new Cookie("email", email);
-      if (saveEmail == null) {
+      if (!saveEmail) {
         cookie.setMaxAge(0); 
       } else {
         cookie.setMaxAge(60 * 60 * 24 * 7);
