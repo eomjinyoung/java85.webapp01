@@ -224,5 +224,5 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 # step29 (로그인 + AJAX + JSON)  
 1) AuthController 에 AJAX 적용
 2) LoginForm.html 생성
-
+   - 쿠키 처리
 
