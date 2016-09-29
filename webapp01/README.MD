@@ -226,3 +226,10 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 2) LoginForm.html 생성
    - 쿠키 처리
 
+# step30 (자바스크립트 코드의 라이브러리화)
+1) HTML과 자바스크립트를 분리
+   authApp.html  -> authApp.html + authApp.js
+   boardApp.html -> boardApp.html + boardApp.js
+   boardForm.html -> boardForm.html + boardForm.js
+
+   
