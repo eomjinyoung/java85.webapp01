@@ -119,3 +119,10 @@ bit.cookieToObject = function() {
     
 	return obj
 }
+
+var $ = bit
+
+
+
+
+
