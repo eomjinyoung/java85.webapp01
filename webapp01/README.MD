@@ -238,4 +238,23 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 
 3) delete 할 때 암호 입력하도록 처리
    => example.controller.json.BoardController 코드 변경
+ 
+ 
+# step30 (함수 라이브러리를 다른 라이브러리와 구분하기 위해 객체에 넣기)
+1) bit 객체를 생성하여 그 객체에 함수는 넣는다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
        

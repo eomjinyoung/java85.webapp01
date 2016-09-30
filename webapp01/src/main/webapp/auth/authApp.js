@@ -9,7 +9,7 @@ document.querySelector("#loginBtn").addEventListener("click", function(event) {
 });
 
 function ajaxLogin(user) {
-	ajax({
+	bit.ajax({
 		url: "login.json",
 		method: "POST",
 		dataType: "json",
@@ -28,18 +28,18 @@ function ajaxLogin(user) {
 }
 
 function ajaxLogout(user) {
-	getJSON("logout.json", function(result) {
+	bit.getJSON("logout.json", function(result) {
 		if (result.state != "success")
 	        console.log("로그아웃 실패입니다.")
     })
 }
 
 function init() {
-	var cookieMap = cookieToObject()
+	var cookieMap = bit.cookieToObject()
 	
 	//if (cookieMap["email"]) { // cookieMap 객체에 email 이름으로 저장된 값이 있는가?
 	if ("email" in cookieMap) { // cookieMap 객체에 email 이라는 이름의 프로퍼티가 있는가?
 		document.querySelector("#email").value = cookieMap["email"]
-	  document.querySelector("#saveEmail").checked = true
+		document.querySelector("#saveEmail").checked = true
 	}
 }

@@ -1,4 +1,6 @@
-function ajax(settings) {
+var bit = {}
+
+bit.ajax = function(settings) {
 	var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(result) {
       if (xhr.readyState != 4)
@@ -25,11 +27,11 @@ function ajax(settings) {
     if (settings.method == "POST") {
       xhr.open(settings.method, settings.url, true)
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
-      xhr.send(objectToQueryString(settings.data))
+      xhr.send(bit.objectToQueryString(settings.data))
     } else {
       var url = settings.url
       if (settings.data) {
-         var queryString = objectToQueryString(settings.data)
+         var queryString = bit.objectToQueryString(settings.data)
          var urlpath = settings.url.split("?")
          var url = urlpath[0]
          if (urlpath.length == 2 && urlpath[1].length > 0) {
@@ -43,7 +45,7 @@ function ajax(settings) {
 }
 
 
-function getJSON(url) {
+bit.getJSON = function(url) {
 	var settings = {
 		url: url,
 		method: "GET",
@@ -63,10 +65,10 @@ function getJSON(url) {
 		settings.success = arguments[2]
 	}
 	
-	ajax(settings);
+	bit.ajax(settings);
 }
 
-function post(url /*,data, success, dataType*/) {
+bit.post = function(url /*,data, success, dataType*/) {
 	var settings = {
 		url: url,
 		method: "POST",
@@ -84,11 +86,11 @@ function post(url /*,data, success, dataType*/) {
 		}
 	}
 	
-	ajax(settings);
+	bit.ajax(settings);
 }
 
 
-function objectToQueryString(obj) {
+bit.objectToQueryString = function(obj) {
   var params = ""
   if (obj) {
 	var firstParam = true
@@ -103,7 +105,7 @@ function objectToQueryString(obj) {
   return params
 }
 
-function cookieToObject() {
+bit.cookieToObject = function() {
 	var cookies = document.cookie.split(";")
 	var obj = {}
 	
