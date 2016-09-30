@@ -2,9 +2,13 @@ var bit = function(value) {
 	var elements = []
 	
 	// 태그를 찾아서 배열에 담는다.
-	var tags = document.querySelectorAll(value);
-	for (var i = 0; i < tags.length; i++) {
-		elements[i] = tags[i]
+	if ((typeof value) == "string") {
+		var tags = document.querySelectorAll(value);
+		for (var i = 0; i < tags.length; i++) {
+			elements[i] = tags[i]
+		}
+	} else if (value instanceof HTMLElement) {
+		elements[0] = value
 	}
 	
 	// 배열에 특별한 기능을 심는다.
@@ -12,10 +16,11 @@ var bit = function(value) {
 	elements.val = function(value) { // getter/setter 겸용
 		if (arguments.length == 0) { // 파라미터 값이 없으면 getter로서 기능
 			return this[0].value
-		} else { // 파라미터 값이 있으면 setter로서 기능
-			for (var i = 0; i < this.length; i++) {
-				this[i].value = value
-			}
+		} 
+		
+		// 파라미터 값이 있으면 setter로서 기능
+		for (var i = 0; i < this.length; i++) {
+			this[i].value = value
 		}
 	}
 	
@@ -23,17 +28,51 @@ var bit = function(value) {
 	elements.checked = function(value) {
 		if (arguments.length == 0) {
 		    return this[0].checked
-		} else {
-			for (var i = 0; i < this.length; i++) {
-				this[i].checked = value
-			} 
-		}
+		} 
+		
+		// 값이 있으면 셋터로 동작한다.
+		for (var i = 0; i < this.length; i++) {
+			this[i].checked = value
+		} 
 	}
 	
 	// => click 이벤트 리스너를 추가하는 기능
 	elements.click = function(listener) {
-		for (var i = 0; this.length; i++) {
+		for (var i = 0; i < this.length; i++) {
 			this[i].addEventListener("click", listener)
+		}
+	}
+	
+	// => innerHTML 값 설정하는 기능
+	elements.html = function(value) {
+		if (arguments.length == 0) {
+			return this[0].innerHTML
+		} 
+		
+		for (var i = 0; i < this.length; i++) {
+			this[i].innerHTML = value
+		}
+	}
+	
+	// => getAttribute()를 호출하는 기능
+	elements.attr = function(name, value) {
+		if (arguments.length == 1) {
+			return this[0].getAttribute(name)
+		} 
+		
+		for (var i = 0; i < this.length; i++) {
+			this[i].setAttribute(name, value)
+		}
+	}
+	
+	// => CSS 스타일을 지정하는 기능
+	elements.css = function(name, value) {
+		if (arguments.length == 1) {
+			return this[0].style[name]
+		} 
+		
+		for (var i = 0; i < this.length; i++) {
+			this[i].style[name] = value
 		}
 	}
 	

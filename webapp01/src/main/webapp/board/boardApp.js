@@ -1,10 +1,10 @@
-document.querySelector("#loginBtn").onclick = function(event) {
+$("#loginBtn").click(function(event) {
 	location.href = "../auth/authApp.html"
-}
+});
 
-document.querySelector("#logoutBtn").onclick = function(event) {
+$("#logoutBtn").click(function(event) {
 	location.href = "../auth/authApp.html"
-}
+});
 
 function ajaxBoardList() {
 	$.getJSON("list.json", function(result) {
@@ -23,30 +23,26 @@ function ajaxBoardList() {
 	    	  "<td>" + arr[i].viewCount + "</td>" + 
 	    	  "</tr>"
 	    }
-	    document.querySelector("#boardTable tbody").innerHTML = contents;
-	    var aTags = document.querySelectorAll(".titleLink")
-	    for (var i = 0; i < aTags.length; i++) {
-		    aTags[i].onclick = function(event) {
-		    	window.location.href = "boardForm.html?no=" + this.getAttribute("data-no")
-		    }
-	    }
+	    $("#boardTable tbody").html(contents)
+	    $(".titleLink").click(function(event) {
+		    window.location.href = "boardForm.html?no=" + $(this).attr("data-no")
+	    })
     })
 }
 
 function ajaxLoginUser() {
 	$.getJSON("../auth/loginUser.json", function(result) {
 	    if (result.state != "success") { // 로그아웃 상태일 경우 로그인 상태와 관련된 태그를 감춘다.
-	         var tags = document.querySelectorAll('.my-login')
-	         for (var i = 0; i < tags.length; i++) 
-	        	 tags[i].style.display = "none";
+	         $('.my-login').css("display", "none")
 	         return
 	    }
 	      
-	    var tags = document.querySelectorAll('.my-logout')
-	    for (var i = 0; i < tags.length; i++) 
-	        tags[i].style.display = "none";
+	    $('.my-logout').css("display", "none")
 	      
 	    document.querySelector("#userName").textContent = result.data.name;
     })
 }
+
+
+
 
