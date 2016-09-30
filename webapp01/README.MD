@@ -235,4 +235,7 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 2) AJAX 요청 코드를 공통 함수로 만든다.
    function ajax({요청정보}) {}
    => webapp/js/bit.js에 공통 함수를 놓는다.
-   
+
+3) delete 할 때 암호 입력하도록 처리
+   => example.controller.json.BoardController 코드 변경
+       

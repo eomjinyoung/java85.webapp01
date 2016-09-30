@@ -21,12 +21,23 @@ function ajax(settings) {
     	  settings.success(result)
       }
     }
-    xhr.open(settings.method, settings.url, true)
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
     
     if (settings.method == "POST") {
+      xhr.open(settings.method, settings.url, true)
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
       xhr.send(objectToQueryString(settings.data))
     } else {
+      var url = settings.url
+      if (settings.data) {
+         var queryString = objectToQueryString(settings.data)
+         var urlpath = settings.url.split("?")
+         var url = urlpath[0]
+         if (urlpath.length == 2 && urlpath[1].length > 0) {
+        	queryString += "&" + urlpath[1]
+         }
+         url += "?" + queryString
+      }
+      xhr.open(settings.method, url, true)
       xhr.send()
     }
 }

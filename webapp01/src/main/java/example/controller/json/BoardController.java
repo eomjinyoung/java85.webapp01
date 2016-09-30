@@ -132,12 +132,17 @@ public class BoardController {
   
   @RequestMapping(path="delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
-  public String delete(int no) throws Exception {
+  public String delete(int no, String password) throws Exception {
     HashMap<String,Object> result = new HashMap<>();
     try {
-      if (boardDao.delete(no) == 0) {
-        throw new Exception("해당 게시물이 없거나 삭제 실패입니다.");
+      HashMap<String,Object> paramMap = new HashMap<>();
+      paramMap.put("no", no);
+      paramMap.put("password", password);
+      
+      if (boardDao.selectOneByPassword(paramMap) == null) {
+        throw new Exception("해당 게시물이 없거나 암호가 일치하지 않습니다!");
       }
+      boardDao.delete(no);
       result.put("state", "success");
     } catch (Exception e) {
       result.put("state", "fail");
