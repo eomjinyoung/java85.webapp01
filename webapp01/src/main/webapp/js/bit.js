@@ -76,6 +76,21 @@ var bit = function(value) {
 		}
 	}
 	
+	// => textContent 값 설정하는 기능
+	elements.text = function(value) {
+		if (arguments.length == 0) {
+			var contents = "" 
+			for (var i = 0; i < this.length; i++) {
+				contents += this[i].textContent
+			}
+			return contents;
+		} 
+		
+		for (var i = 0; i < this.length; i++) {
+			this[i].textContent = value
+		}
+	}
+	
 	return elements
 };
 

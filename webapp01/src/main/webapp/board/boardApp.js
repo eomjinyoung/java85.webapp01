@@ -39,7 +39,7 @@ function ajaxLoginUser() {
 	      
 	    $('.my-logout').css("display", "none")
 	      
-	    document.querySelector("#userName").textContent = result.data.name;
+	    $("#userName").text(result.data.name);
     })
 }
 
