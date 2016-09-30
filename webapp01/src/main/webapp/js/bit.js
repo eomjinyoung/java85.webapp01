@@ -31,6 +31,33 @@ function ajax(settings) {
     }
 }
 
+
+
+
+function getJSON(url) {
+	var settings = {
+		url: url,
+		method: "GET",
+		dataType: "json"
+	}
+	
+	if (arguments.length == 2) {
+		if ((typeof arguments[1]) == "function") {
+			settings.success = arguments[1]
+		} else {
+			settings.data = arguments[1]
+		}
+	}
+	
+	if (arguments.length == 3) {
+		settings.data = arguments[1]
+		settings.success = arguments[2]
+	}
+	
+	ajax(settings);
+}
+
+
 function objectToQueryString(obj) {
   var params = ""
   if (obj) {
@@ -53,10 +80,10 @@ function cookieToObject() {
 	if (cookies.length == 0) 
 		return obj;
 	
-  cookies.forEach(function(data) {
+    cookies.forEach(function(data) {
 	  var cookie = data.trim().split("=")
 	  obj[cookie[0]] = cookie[1].replace(/\"/gi, "")
-  });
+    });
     
 	return obj
 }
