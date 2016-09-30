@@ -1,4 +1,44 @@
-var bit = {}
+var bit = function(value) {
+	var elements = []
+	
+	// 태그를 찾아서 배열에 담는다.
+	var tags = document.querySelectorAll(value);
+	for (var i = 0; i < tags.length; i++) {
+		elements[i] = tags[i]
+	}
+	
+	// 배열에 특별한 기능을 심는다.
+	// => 배열 안에 있는 모든 항목의 값을 꺼내 문자열로 만들어 리턴하는 기능
+	elements.val = function(value) { // getter/setter 겸용
+		if (arguments.length == 0) { // 파라미터 값이 없으면 getter로서 기능
+			return this[0].value
+		} else { // 파라미터 값이 있으면 setter로서 기능
+			for (var i = 0; i < this.length; i++) {
+				this[i].value = value
+			}
+		}
+	}
+	
+	// => checkbox 타입의 태그를 조사하여 체크한 여부를 리턴하는 기능 
+	elements.checked = function(value) {
+		if (arguments.length == 0) {
+		    return this[0].checked
+		} else {
+			for (var i = 0; i < this.length; i++) {
+				this[i].checked = value
+			} 
+		}
+	}
+	
+	// => click 이벤트 리스너를 추가하는 기능
+	elements.click = function(listener) {
+		for (var i = 0; this.length; i++) {
+			this[i].addEventListener("click", listener)
+		}
+	}
+	
+	return elements
+};
 
 bit.ajax = function(settings) {
 	var xhr = new XMLHttpRequest();

@@ -1,10 +1,9 @@
-document.querySelector("#loginBtn").addEventListener("click", function(event) {
+$("#loginBtn").click(function(event) {
 	var user = {
-    email: document.querySelector("#email").value,
-    password: document.querySelector("#password").value,
-    saveEmail: document.querySelector("#saveEmail").checked 
+    email: $("#email").val(),
+    password: $("#password").val(),
+    saveEmail: $("#saveEmail").checked()
   }
-	
   ajaxLogin(user)
 });
 
@@ -39,7 +38,17 @@ function init() {
 	
 	//if (cookieMap["email"]) { // cookieMap 객체에 email 이름으로 저장된 값이 있는가?
 	if ("email" in cookieMap) { // cookieMap 객체에 email 이라는 이름의 프로퍼티가 있는가?
-		document.querySelector("#email").value = cookieMap["email"]
-		document.querySelector("#saveEmail").checked = true
+		$("#email").val(cookieMap["email"])
+		$("#saveEmail").checked(true)
 	}
 }
+
+
+
+
+
+
+
+
+
+
