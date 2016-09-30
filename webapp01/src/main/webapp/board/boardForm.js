@@ -1,26 +1,24 @@
-document.querySelector("#addBtn").addEventListener("click", function(event) {
+$("#addBtn").click(function(event) {
 	var board = {
-	  title: document.querySelector("#title").value,
-	  contents: document.querySelector("#contents").value,
-	  password: document.querySelector("#password").value
+	  title: $("#title").val(),
+	  contents: $("#contents").val(),
+	  password: $("#password").val()
 	}
 	ajaxAddBoard(board)
 });
 
-document.querySelector("#updateBtn").addEventListener("click", function(event) {
+$("#updateBtn").click(function(event) {
   var board = {
-    title: document.querySelector("#title").value,
-    contents: document.querySelector("#contents").value,
-    password: document.querySelector("#password").value,
-    no: document.querySelector("#no").value
+    title: $("#title").val(),
+    contents: $("#contents").val(),
+    password: $("#password").val(),
+    no: $("#no").val()
   }
   ajaxUpdateBoard(board)
 });
 
-document.querySelector("#deleteBtn").addEventListener("click", function(event) {
-  ajaxDeleteBoard(
-		  document.querySelector("#no").value,
-		  document.querySelector("#password").value)
+$("#deleteBtn").click(function(event) {
+  ajaxDeleteBoard($("#no").val(), $("#password").val())
 });
 
 function ajaxAddBoard(board) {
@@ -36,16 +34,15 @@ function ajaxAddBoard(board) {
 function ajaxLoadBoard(no) {
 	$.getJSON("detail.json?no=" + no, function(result) {
 		if (result.state != "success") {
-			console.log(result.data)
 			alert("조회 실패입니다.")
 			return
 		}
 		
-		document.querySelector("#no").value = result.data.no;
-		document.querySelector("#title").value = result.data.title;
-		document.querySelector("#contents").value = result.data.contents;
-		document.querySelector("#createdDate").textContent = result.data.createdDate2;
-		document.querySelector("#viewCount").textContent = result.data.viewCount;
+		$("#no").val(result.data.no);
+		$("#title").val(result.data.title);
+		$("#contents").val(result.data.contents);
+		$("#createdDate").text(result.data.createdDate2);
+		$("#viewCount").text(result.data.viewCount);
 	})
 }
 

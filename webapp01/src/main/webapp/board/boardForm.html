@@ -92,15 +92,9 @@
 if (location.search.startsWith("?")) { // 예) ?no=xxx
 	  var no = location.search.split("=")[1];
 	  ajaxLoadBoard(no)
-	  var tags = document.querySelectorAll(".my-new")
-    for (var i = 0; i < tags.length; i++) {
-      tags[i].style.display = "none"
-    }
+	  $(".my-new").css("display", "none")
 } else {
-	  var tags = document.querySelectorAll(".my-view")
-	  for (var i = 0; i < tags.length; i++) {
-		  tags[i].style.display = "none"
-	  }
+	  $(".my-view").css("display", "none")
 }
 
 
