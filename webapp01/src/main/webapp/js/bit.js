@@ -32,8 +32,6 @@ function ajax(settings) {
 }
 
 
-
-
 function getJSON(url) {
 	var settings = {
 		url: url,
@@ -52,6 +50,27 @@ function getJSON(url) {
 	if (arguments.length == 3) {
 		settings.data = arguments[1]
 		settings.success = arguments[2]
+	}
+	
+	ajax(settings);
+}
+
+function post(url /*,data, success, dataType*/) {
+	var settings = {
+		url: url,
+		method: "POST",
+		dataType: "text"
+	}
+	
+	for (var i = 1; i < arguments.length; i++) {
+		type = typeof arguments[i]
+		if (type == "function") {
+			settings.success = arguments[i]
+		} else if (type == "string") {
+			settings.dataType = arguments[i]
+		} else {
+			settings.data = arguments[i]
+		}
 	}
 	
 	ajax(settings);

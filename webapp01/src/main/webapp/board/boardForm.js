@@ -22,44 +22,13 @@ document.querySelector("#deleteBtn").addEventListener("click", function(event) {
 });
 
 function ajaxAddBoard(board) {
-	  var xhr = new XMLHttpRequest();
-	  xhr.onreadystatechange = function() {
-	    if (xhr.readyState != 4)
-	      return;
-	    
-	    if (xhr.status != 200) {
-	      alert("서버에 잘못 요청했습니다.")
-	      return;
-	    }
-	    
-	    var result = JSON.parse(xhr.responseText)
-	    /* result 예)
-	       {
-	    	   state : "success" or "fail",
-	    	   data : 결과 데이터 
-	       }
-	     */
-	    if (result.state != "success") {
-	    	 console.log(result.data)
+	post("add.json", board, function(result) {
+		if (result.state != "success") {
 	    	 alert("등록 실패입니다.")
 	    	 return
 	    }
-	    
 	    window.location.href = "boardApp.html"
-	  }
-	  xhr.open("POST", "add.json", true)
-	  
-	  // POST 요청은 헤더를 추가해야 한다.
-	  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"); 
-	  
-	  // POST 요청은 서버에 데이터를 보낼 때 send()의 파라미터로 보낸다.
-	  var params = "title=" + encodeURIComponent(board.title) + 
-	               "&contents=" + encodeURIComponent(board.contents) + 
-	               "&password=" + encodeURIComponent(board.password)
-	  
-	  // 웹브라우저인 경우 자동으로 데이터에 대해 URL인코딩을 수행한다.
-	  // 그런데 자바스크립트 AJAX에서는 개발자가 직접 URL인코딩을 수행해야 한다.
-	  xhr.send(params) 
+	}, "json")
 }
 
 function ajaxLoadBoard(no) {
