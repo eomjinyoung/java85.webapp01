@@ -19,7 +19,7 @@ function ajaxBoardList() {
 	    	contents += "<tr>" +
 	    	  "<td>" + arr[i].no + "</td>" + 
 	    	  "<td><a class='titleLink' href='#' data-no='" + arr[i].no + "'>" + arr[i].title + "</a></td>" +
-	    	  "<td>" + arr[i].createdDate + "</td>" +
+	    	  "<td>" + arr[i].createdDate2 + "</td>" +
 	    	  "<td>" + arr[i].viewCount + "</td>" + 
 	    	  "</tr>"
 	    }

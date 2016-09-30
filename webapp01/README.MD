@@ -247,7 +247,7 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 # step32 (bit 객체를 함수 객체로 만들어 기타 기능 추가하기)
 1) bit 함수에 이벤트 리스너 등록과 DOM API 기능 추가 
 
-
+# step33 (bit 라이브러리를 jQuery 라이브러리로 대체)
 
 
 

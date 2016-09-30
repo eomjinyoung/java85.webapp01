@@ -2,7 +2,7 @@ $("#loginBtn").click(function(event) {
 	var user = {
     email: $("#email").val(),
     password: $("#password").val(),
-    saveEmail: $("#saveEmail").checked()
+    saveEmail: $("#saveEmail").is(":checked")
   }
   ajaxLogin(user)
 });
@@ -34,12 +34,11 @@ function ajaxLogout(user) {
 }
 
 function init() {
-	var cookieMap = $.cookieToObject()
+	var cookieMap = bit.cookieToObject()
 	
-	//if (cookieMap["email"]) { // cookieMap 객체에 email 이름으로 저장된 값이 있는가?
 	if ("email" in cookieMap) { // cookieMap 객체에 email 이라는 이름의 프로퍼티가 있는가?
 		$("#email").val(cookieMap["email"])
-		$("#saveEmail").checked(true)
+		$("#saveEmail").attr("checked", true)
 	}
 }
 
