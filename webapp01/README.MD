@@ -249,7 +249,25 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 
 # step33 (bit 라이브러리를 jQuery 라이브러리로 대체)
 
-
+# step34 (자바스크립트 패키지 관리자를 이용한 라이브러리 관리)
+- npm 또는 bower를 이용하여 라이브러리 관리
+- 요즘 추세는 npm으로 단일화하려 한다.
+1) npm init
+   => 패키지 관리 설정 파일 자동 생성
+   => ../webapp/ 폴더에서 명령을 실행한다.
+   => /webapp/package.json
+2) npm install 라이브러리명 --save
+   => 최신 버전 의존 라이브러리 파일 다운로드 및 package.json에 등록하기
+   => 예) npm install bootstrap --save
+3) 이전 버전 가져오기
+   => npm install 라이브러리@이전버전 --save
+   => npm install jquery@1.12.4
+- 자바스크립트 라이브러리를 서버에 다운로드 해야 하는가?
+  그냥 CDN을 이용하여 외부 링크를 걸면 안되는가?
+  => 보안 상 외부 사이트에 링크를 걸지 못할 경우가 있다.
+  => 하이브리드 앱을 만들 때는 반드시 모든 파일을 패킹해야 한다.
+  
+   
 
 
 
