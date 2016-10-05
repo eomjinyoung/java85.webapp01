@@ -27,7 +27,7 @@ function ajaxAddBoard(board) {
 		if (result.state != "success") {
 	    	 alert("등록 실패입니다.")
 	    	 return
-	    }
+	    } 
 	    window.location.href = "boardApp.html"
 	}, "json")
 }
