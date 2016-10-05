@@ -22,7 +22,8 @@ $("#deleteBtn").click(function(event) {
 });
 
 function ajaxAddBoard(board) {
-	$.post("add.json", board, function(result) {
+	$.post("add.json", board, function(obj) {
+		var result = obj.jsonResult
 		if (result.state != "success") {
 	    	 alert("등록 실패입니다.")
 	    	 return
@@ -32,7 +33,8 @@ function ajaxAddBoard(board) {
 }
 
 function ajaxLoadBoard(no) {
-	$.getJSON("detail.json?no=" + no, function(result) {
+	$.getJSON("detail.json?no=" + no, function(obj) {
+		var result = obj.jsonResult
 		if (result.state != "success") {
 			alert("조회 실패입니다.")
 			return
@@ -47,7 +49,8 @@ function ajaxLoadBoard(no) {
 }
 
 function ajaxUpdateBoard(board) {
-	$.post("update.json", board, function(result) {
+	$.post("update.json", board, function(obj) {
+		var result = obj.jsonResult
 		if (result.state != "success") {
 			alert("변경 실패입니다.")
 			return
@@ -60,7 +63,8 @@ function ajaxDeleteBoard(no, password) {
 	$.getJSON("delete.json", {
 		no: no,
 		password: password
-	}, function(result) {
+	}, function(obj) {
+		var result = obj.jsonResult
 		if (result.state != "success") {
 			alert("삭제 실패입니다.")
 			return

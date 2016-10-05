@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import example.dao.MemberDao;
+import example.vo.JsonResult;
 import example.vo.Member;
 
 @Controller 
@@ -33,7 +34,6 @@ public class AuthController {
       Model model,
       SessionStatus sessionStatus) throws Exception {
     
-    HashMap<String,Object> result = new HashMap<>();
     try {
       Cookie cookie = new Cookie("email", email);
       if (!saveEmail) {
@@ -55,50 +55,43 @@ public class AuthController {
       
       if (member == null) {
         sessionStatus.setComplete(); // 스프링이 관리하는 세션 값을 무효화시킨다.
-        result.put("state", "fail");
+        return JsonResult.fail();
         
       } else {
         model.addAttribute("member", member); // Model 객체에 로그인 회원 정보를 담는다.
-        result.put("state", "success");
+        return JsonResult.success();
       }
       
     } catch (Exception e) {
-      result.put("state", "error");
-      result.put("data", e.getMessage());
+      return JsonResult.error(e.getMessage());
     }
-    return result;  
   }
   
   @RequestMapping(path="logout")
   public Object logout(HttpSession session, SessionStatus sessionStatus) throws Exception {
-    HashMap<String,Object> result = new HashMap<>();
     try {
       sessionStatus.setComplete();
       session.invalidate();
-      result.put("state", "success");
+      return JsonResult.success();
+      
     } catch (Exception e) {
-      result.put("state", "error");
-      result.put("data", e.getMessage());
+      return JsonResult.error(e.getMessage());
     }
-    return result;   
   }
   
   @RequestMapping(path="loginUser")
   public Object loginUser(HttpSession session) throws Exception {
     
-    HashMap<String,Object> result = new HashMap<>();
     try {
       Member member = (Member)session.getAttribute("member");
       if (member == null) {
         throw new Exception("로그인이 되지 않았습니다.");
       }
-      result.put("state", "success");
-      result.put("data", member);
+      return JsonResult.success(member);
+      
     } catch (Exception e) {
-      result.put("state", "error");
-      result.put("data", e.getMessage());
+      return JsonResult.error(e.getMessage());
     }
-    return result;  
   }
   
 }
