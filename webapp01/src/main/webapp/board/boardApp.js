@@ -7,7 +7,7 @@ $("#logoutBtn").click(function(event) {
 });
 
 function ajaxBoardList() {
-	$.getJSON("list.json", function(obj) {
+	$.getJSON(serverAddr + "/board/list.json", function(obj) {
 		var result = obj.jsonResult
 		if (result.state != "success") {
 	    	 alert("서버에서 데이터를 가져오는데 실패했습니다.")
@@ -32,7 +32,7 @@ function ajaxBoardList() {
 }
 
 function ajaxLoginUser() {
-	$.getJSON("../auth/loginUser.json", function(obj) {
+	$.getJSON(serverAddr + "/auth/loginUser.json", function(obj) {
 		var result = obj.jsonResult
 	    if (result.state != "success") { // 로그아웃 상태일 경우 로그인 상태와 관련된 태그를 감춘다.
 	         $('.my-login').css("display", "none")

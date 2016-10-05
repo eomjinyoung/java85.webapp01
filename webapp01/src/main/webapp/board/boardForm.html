@@ -21,8 +21,10 @@
   자바85기^^
 
   <div style='position:absolute;right:0px;top:0px;font-size:15px;'>
-    <a href='/webapp01/auth/form.do'
-       class="btn btn-success btn-xs">로그인</a></div> 
+    <span id="userName" class="my-login"></span>
+    <a id="loginBtn" href='#' class="btn btn-success btn-xs my-logout">로그인</a>
+    <a id="logoutBtn" href='#' class="btn btn-success btn-xs my-login">로그아웃</a>
+  </div> 
 
 </div>
 
@@ -84,9 +86,13 @@
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/bit.js"></script>
 <script type="text/javascript" src="boardForm.js"></script>
 <script>
+
+ajaxLoginUser() // 로그인 유저 정보 가져오기
+
 // URL에 no 파라미터 값이 넘어오면 조회 모드로 동작해야 한다.
 if (location.search.startsWith("?")) { // 예) ?no=xxx
 	  var no = location.search.split("=")[1];

@@ -1,3 +1,11 @@
+$("#loginBtn").click(function(event) {
+	location.href = "../auth/authApp.html"
+});
+
+$("#logoutBtn").click(function(event) {
+	location.href = "../auth/authApp.html"
+});
+
 $("#addBtn").click(function(event) {
 	var board = {
 	  title: $("#title").val(),
@@ -22,7 +30,7 @@ $("#deleteBtn").click(function(event) {
 });
 
 function ajaxAddBoard(board) {
-	$.post("add.json", board, function(obj) {
+	$.post(serverAddr + "/board/add.json", board, function(obj) {
 		var result = obj.jsonResult
 		if (result.state != "success") {
 	    	 alert("등록 실패입니다.")
@@ -33,7 +41,7 @@ function ajaxAddBoard(board) {
 }
 
 function ajaxLoadBoard(no) {
-	$.getJSON("detail.json?no=" + no, function(obj) {
+	$.getJSON(serverAddr + "/board/detail.json?no=" + no, function(obj) {
 		var result = obj.jsonResult
 		if (result.state != "success") {
 			alert("조회 실패입니다.")
@@ -49,7 +57,7 @@ function ajaxLoadBoard(no) {
 }
 
 function ajaxUpdateBoard(board) {
-	$.post("update.json", board, function(obj) {
+	$.post(serverAddr + "/board/update.json", board, function(obj) {
 		var result = obj.jsonResult
 		if (result.state != "success") {
 			alert("변경 실패입니다.")
@@ -60,7 +68,7 @@ function ajaxUpdateBoard(board) {
 }
 
 function ajaxDeleteBoard(no, password) {
-	$.getJSON("delete.json", {
+	$.getJSON(serverAddr + "/board/delete.json", {
 		no: no,
 		password: password
 	}, function(obj) {
@@ -73,7 +81,19 @@ function ajaxDeleteBoard(no, password) {
 	})
 }
 
-
+function ajaxLoginUser() {
+	$.getJSON(serverAddr + "/auth/loginUser.json", function(obj) {
+		var result = obj.jsonResult
+	    if (result.state != "success") { // 로그아웃 상태일 경우 로그인 상태와 관련된 태그를 감춘다.
+	         $('.my-login').css("display", "none")
+	         return
+	    }
+	      
+	    $('.my-logout').css("display", "none")
+	      
+	    $("#userName").text(result.data.name);
+    })
+}
 
 
 
