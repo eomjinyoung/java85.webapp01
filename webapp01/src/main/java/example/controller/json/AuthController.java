@@ -7,15 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.google.gson.Gson;
 
 import example.dao.MemberDao;
 import example.vo.Member;
@@ -27,9 +23,8 @@ public class AuthController {
   
   @Autowired MemberDao memberDao;
   
-  @RequestMapping(path="login", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseBody
-  public String login(
+  @RequestMapping(path="login")
+  public Object login(
       HttpSession session, /* 세션이 무효화된 이후에 세션을 자동 생성하도록 강제한다.*/
       HttpServletResponse response,
       String email,
@@ -71,12 +66,11 @@ public class AuthController {
       result.put("state", "error");
       result.put("data", e.getMessage());
     }
-    return new Gson().toJson(result);  
+    return result;  
   }
   
-  @RequestMapping(path="logout", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseBody
-  public String logout(HttpSession session, SessionStatus sessionStatus) throws Exception {
+  @RequestMapping(path="logout")
+  public Object logout(HttpSession session, SessionStatus sessionStatus) throws Exception {
     HashMap<String,Object> result = new HashMap<>();
     try {
       sessionStatus.setComplete();
@@ -86,12 +80,11 @@ public class AuthController {
       result.put("state", "error");
       result.put("data", e.getMessage());
     }
-    return new Gson().toJson(result);   
+    return result;   
   }
   
-  @RequestMapping(path="loginUser", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseBody
-  public String loginUser(HttpSession session) throws Exception {
+  @RequestMapping(path="loginUser")
+  public Object loginUser(HttpSession session) throws Exception {
     
     HashMap<String,Object> result = new HashMap<>();
     try {
@@ -105,7 +98,7 @@ public class AuthController {
       result.put("state", "error");
       result.put("data", e.getMessage());
     }
-    return new Gson().toJson(result);  
+    return result;  
   }
   
 }

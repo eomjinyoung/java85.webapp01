@@ -15,6 +15,29 @@
     
     <mvc:annotation-driven/>
      
+    <!-- 기존의 ViewResolver를 협상 역할을 하는 뷰리졸버로 교체한다. 
+         => 교체하는 방법은 그냥 그 타입의 객체를 등록하면 된다.
+    -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <!--  
+		    <property name="viewResolvers">
+		        <list>
+		            <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+		            <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		                <property name="prefix" value="/WEB-INF/jsp/"/>
+		                <property name="suffix" value=".jsp"/>
+		            </bean>
+		        </list>
+		    </property>
+		    -->
+		    <property name="defaultViews">
+		        <list>
+		            <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+		        </list>
+		    </property>
+		</bean>
+    
+     
 </beans>
 
 
