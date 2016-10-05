@@ -31,7 +31,7 @@ public class BoardController {
     List<Board> list = boardDao.selectList(map);
     model.addAttribute("list", list);
     
-    return "/board/BoardList.jsp";
+    return "board/BoardList";
   }
   
   @RequestMapping("add")
@@ -44,7 +44,7 @@ public class BoardController {
   public String detail(int no, Model model) throws Exception {
     Board board = boardDao.selectOne(no);
     model.addAttribute("board", board);
-    return "/board/BoardDetail.jsp";
+    return "board/BoardDetail";
   }
   
   @RequestMapping("update")

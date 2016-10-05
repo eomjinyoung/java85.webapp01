@@ -18,6 +18,16 @@
     
     <mvc:annotation-driven/>
      
+    <!-- 기존의 ViewResolver를 교체한다. 
+         이 뷰리졸버는 JSP를 찾을 때 WEB-INF/view 아래에서 찾는다.
+         즉 페이지 컨트롤러가 리턴한 값에 대해
+         /WEB-INF/view/ + 리턴한값 + .jsp = JSP 경로
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 </beans>
 
 

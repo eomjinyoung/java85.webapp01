@@ -285,8 +285,14 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
 - 게시물 상세보기 폼에 로그인 사용자 정보 로딩하는 기능 추가
   => boardForm.html, boardForm.js
 
-
-
+# step38 (JSP 감추기)
+- 외부에서 직접 JSP를 요청하지 못하도록 한다.
+  JSP는 페이지 컨트롤러가 작업한 후에 호출되어야 한다.
+  => webapp/WEB-INF/view 폴더에 옮긴다.
+  => JSP파일이 어느 폴더에 있는지 스프링에 알려준다.
+     뷰리졸버 교체 
+  => InternalResourceViewResolver의 설정에 맞추어 
+     페이지 컨트롤러는 JSP 경로를 리턴해야 한다.
 
 
 
