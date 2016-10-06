@@ -43,7 +43,8 @@
     where no=#{no} and password=password(#{password})
   </select>
   
-  <insert id="insert" parameterType="board">
+  <insert id="insert" parameterType="board" 
+          useGeneratedKeys="true" keyColumn="no" keyProperty="no">
     insert into boards(title, conts, password, cre_dt)
     values(#{title}, #{contents}, password(#{password}), now())
   </insert>
