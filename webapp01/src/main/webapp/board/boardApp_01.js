@@ -14,9 +14,13 @@ function ajaxBoardList() {
 	    	 return
 	    }
 		
+		var contents = ""
+	    var arr = result.data
 	    var template = Handlebars.compile($('#trTemplateText').html())
-	    $("#boardTable tbody").html(template(result))
-	    
+	    for (var i in arr) {
+	    	contents += template(arr[i])
+	    }
+	    $("#boardTable tbody").html(contents)
 	    $(".titleLink").click(function(event) {
 		    window.location.href = "boardForm.html?no=" + $(this).attr("data-no")
 	    })

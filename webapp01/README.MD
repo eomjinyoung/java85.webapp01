@@ -294,6 +294,22 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
   => InternalResourceViewResolver의 설정에 맞추어 
      페이지 컨트롤러는 JSP 경로를 리턴해야 한다.
 
+# step39 (HTML 템플릿 자바스크립트 라이브러리)
+- handlebars 자바스크립트 라이브러리 추가
+  => npm install handlebars --save
+- /webapp/board/boardApp.html, boardApp.js 변경
+  => handlebars 라이브러리 임포트
+  => <tr> 태그 생성을 handlebars를 사용하여 처리  
+
+
+
+
+
+
+
+
+
+
 
 
 
