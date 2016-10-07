@@ -37,7 +37,12 @@
 		    </property>
 		</bean>
     
-     
+    <!-- 멀티파트 요청 데이터를 처리할 객체를 등록한다. -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 업로드할 수 있는 파일의 최대 크기 설정(바이트) -->
+        <property name="maxUploadSize" value="10000000"/>
+    </bean> 
 </beans>
 
 

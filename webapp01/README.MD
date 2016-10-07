@@ -301,10 +301,38 @@ Dababase, MyBatis, DAO, Service 등 페이지 컨트롤러가 사용하는 기�
   => handlebars 라이브러리 임포트
   => <tr> 태그 생성을 handlebars를 사용하여 처리  
 
+# step40 (파일 업로드 기능 추가)
+1) 스프링 설정 파일에 멀티파트 처리 객체 등록
+  => /webapp/WEB-INF/dispatcher-servlet.xml
+  => /webapp/WEB-INF/json-servlet.xml
+    <!-- 멀티파트 요청 데이터를 처리할 객체를 등록한다. -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 업로드할 수 있는 파일의 최대 크기 설정(바이트) -->
+        <property name="maxUploadSize" value="10000000"/>
+    </bean>
 
+2) 아파치 fileupload 라이브러리 추가
+  => build.gradle 
+compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.2'
 
+3) 이클립스 설정 파일 갱신
+  => gradle eclipse   : 명령 실행   
+  => 이클립에서 프로젝트 리프레시 
 
+4) 게시물 입력 폼에 파일 업로드 항목 추가
+  => /webapp/board/form.html
 
+5) 자바 클래스 준비
+  => BoardFile.java (VO)
+  => BoardFileDao.java (DAO)
+
+6) BoardFileDao를 위한 SQL 맵퍼 파일 준비
+  => src/main/resources/sql/BoardFileMapper.xml
+  => insert()를 위한 SQL 준비
+  
+7) 페이지 컨트롤러의 요청 핸들러 변경 
+  => BoardController.add() 메서드 변경    
 
 
 

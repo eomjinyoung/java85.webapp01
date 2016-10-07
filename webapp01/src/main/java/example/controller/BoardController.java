@@ -1,22 +1,30 @@
 package example.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import example.dao.BoardDao;
+import example.dao.BoardFileDao;
+import example.util.FileUploadUtil;
 import example.vo.Board;
+import example.vo.BoardFile;
 
 @Controller 
 @RequestMapping("/board/")
 public class BoardController {
-  
+  @Autowired ServletContext sc;
   @Autowired BoardDao boardDao;
+  @Autowired BoardFileDao boardFileDao;
   
   @RequestMapping("list")
   public String list(
@@ -35,8 +43,41 @@ public class BoardController {
   }
   
   @RequestMapping("add")
-  public String add(Board board) throws Exception {
+  public String add(
+      Board board,
+      MultipartFile file1,
+      MultipartFile file2) throws Exception {
+    
     boardDao.insert(board);
+    
+    String newFilename = null;
+    if (!file1.isEmpty()) {
+      newFilename = FileUploadUtil.getNewFilename(file1.getOriginalFilename());
+      try {
+        file1.transferTo(new File(sc.getRealPath("/upload/" + newFilename)));
+        BoardFile boardFile = new BoardFile();
+        boardFile.setFilename(newFilename);
+        boardFile.setBoardNo(board.getNo());
+        boardFileDao.insert(boardFile);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    if (!file2.isEmpty()) {
+      newFilename = FileUploadUtil.getNewFilename(file2.getOriginalFilename());
+      try {
+        file2.transferTo(new File(sc.getRealPath("/upload/" + newFilename)));
+        BoardFile boardFile = new BoardFile();
+        boardFile.setFilename(newFilename);
+        boardFile.setBoardNo(board.getNo());
+        boardFileDao.insert(boardFile);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    
     return "redirect:list.do";
   }
   
