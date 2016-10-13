@@ -334,6 +334,10 @@ compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.2
 7) 페이지 컨트롤러의 요청 핸들러 변경 
   => BoardController.add() 메서드 변경    
 
+# step41 (Service Layer 추가)
+=> 페이지 컨트롤러가 하던 업무 관련 일을 별도의 클래스로 분리한다.
+=> BoardController = BoardController + BoardService
+=> BoardService의 데이터 변경 메서드에 대해 트랜잭션으로 묶는다.
 
 
 
