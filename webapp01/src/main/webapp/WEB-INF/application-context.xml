@@ -3,12 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="example">
       <context:exclude-filter type="annotation" 
@@ -33,7 +39,41 @@
           
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		  <property name="basePackage" value="example.dao" />
-		</bean>        
+		</bean>  
+		
+		<!-- 트랜잭션 관리자 등록 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+		<!-- 서비스 메서드에 적용할 AOP 필터 선언 
+         => 필터 클래스를 만들지 않았는데?
+         => 스프링에서 트랜잭션을 위해 미리 만들어 놓은 AOP 필터(advice) 객체이다.
+            개발자가 따로 필터 클래스를 만들 필요가 없다. 
+    -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 스프링 AOP 기능 활성화 시킨다. -->
+    <aop:aspectj-autoproxy/>
+    
+    <!-- 포인트 컷(특정 조건에 해당하는 메서드에 대해)으로 AOP 필터 적용 -->
+    <aop:config>
+        <!-- 포인트 컷 선언 => 필터를 적용할 대상 클래스와 메서드를 지정 -->
+        <aop:pointcut id="serviceOperationPointCut" 
+                      expression="execution(* *..service.impl..*(..))"/>
+        <!-- 포인터 컷과 어드바이스를 연결 
+             => 대상 메서드를 만나면 txAdvice 규칙에 따라 필터를 실행하라!
+             => 즉 대상 메서드를 호출할 때 마다 txAdvice 규칙에 정의된 대로
+                트랜잭션을 다뤄라! 
+        -->
+        <aop:advisor advice-ref="txAdvice" 
+                     pointcut-ref="serviceOperationPointCut"/>
+    </aop:config>      
 </beans>
 
 

@@ -336,10 +336,47 @@ compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.2
 
 # step41 (Service Layer 추가)
 => 페이지 컨트롤러가 하던 업무 관련 일을 별도의 클래스로 분리한다.
-=> BoardController = BoardController + BoardService
+=> BoardController = BoardController + BoardService + DefaultBoardService
+   1) service 패키지 생성
+   2) BoardService 인터페이스 추가
+   3) service.impl 패키지 생성
+   4) DefaultBoardService 클래스 추가
 => BoardService의 데이터 변경 메서드에 대해 트랜잭션으로 묶는다.
-
-
+   => 스프링 설정 파일에 트랜잭션을 적용할 메서드의 규칙을 지정한다.
+   => application-context.xml 파일에 다음 추가
+    <!-- 트랜잭션 관리자 등록 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 서비스 메서드에 적용할 AOP 필터 선언 
+         => 필터 클래스를 만들지 않았는데?
+         => 스프링에서 트랜잭션을 위해 미리 만들어 놓은 AOP 필터(advice) 객체이다.
+            개발자가 따로 필터 클래스를 만들 필요가 없다. 
+    -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 스프링 AOP 기능 활성화 시킨다. -->
+    <aop:aspectj-autoproxy/>
+    
+    <!-- 포인트 컷(특정 조건에 해당하는 메서드에 대해)으로 AOP 필터 적용 -->
+    <aop:config>
+        <!-- 포인트 컷 선언 => 필터를 적용할 대상 클래스와 메서드를 지정 -->
+        <aop:pointcut id="serviceOperationPointCut" 
+                      expression="execution(* *..service.impl..*(..))"/>
+        <!-- 포인터 컷과 어드바이스를 연결 
+             => 대상 메서드를 만나면 txAdvice 규칙에 따라 필터를 실행하라!
+             => 즉 대상 메서드를 호출할 때 마다 txAdvice 규칙에 정의된 대로
+                트랜잭션을 다뤄라! 
+        -->
+        <aop:advisor advice-ref="txAdvice" 
+                     pointcut-ref="serviceOperationPointCut"/>
+    </aop:config>     
 
 
 

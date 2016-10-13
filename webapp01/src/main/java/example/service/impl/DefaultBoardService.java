@@ -37,29 +37,21 @@ public class DefaultBoardService implements BoardService {
     String newFilename = null;
     if (!file1.isEmpty()) {
       newFilename = FileUploadUtil.getNewFilename(file1.getOriginalFilename());
-      try {
-        file1.transferTo(new File(uploadDir + newFilename));
-        BoardFile boardFile = new BoardFile();
-        boardFile.setFilename(newFilename);
-        //boardFile.setBoardNo(board.getNo());
-        boardFile.setBoardNo(10200);
-        boardFileDao.insert(boardFile);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      file1.transferTo(new File(uploadDir + newFilename));
+      BoardFile boardFile = new BoardFile();
+      boardFile.setFilename(newFilename);
+      boardFile.setBoardNo(board.getNo());
+      //boardFile.setBoardNo(10200); //트랜잭션 테스트 용 
+      boardFileDao.insert(boardFile);
     }
     
     if (!file2.isEmpty()) {
       newFilename = FileUploadUtil.getNewFilename(file2.getOriginalFilename());
-      try {
-        file2.transferTo(new File(uploadDir + newFilename));
-        BoardFile boardFile = new BoardFile();
-        boardFile.setFilename(newFilename);
-        boardFile.setBoardNo(board.getNo());
-        boardFileDao.insert(boardFile);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      file2.transferTo(new File(uploadDir + newFilename));
+      BoardFile boardFile = new BoardFile();
+      boardFile.setFilename(newFilename);
+      boardFile.setBoardNo(board.getNo());
+      boardFileDao.insert(boardFile);
     }
   }
   

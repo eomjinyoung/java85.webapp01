@@ -36,7 +36,11 @@ public class BoardController {
       MultipartFile file1,
       MultipartFile file2) throws Exception {
     String uploadDir = sc.getRealPath("/upload") + "/";
-    boardService.insertBoard(board, file1, file2, uploadDir);
+    try {
+      boardService.insertBoard(board, file1, file2, uploadDir);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return "redirect:list.do";
   }
   
