@@ -30,6 +30,7 @@ public class BoardController {
       data.put("list", list);
       data.put("totalPage", totalPage);
       data.put("pageNo", pageNo);
+      data.put("length", length);
       
       return JsonResult.success(data);
       
