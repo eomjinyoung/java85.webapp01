@@ -35,7 +35,7 @@ public class DefaultBoardService implements BoardService {
     boardDao.insert(board);
     
     String newFilename = null;
-    if (!file1.isEmpty()) {
+    if (file1 != null && !file1.isEmpty()) {
       newFilename = FileUploadUtil.getNewFilename(file1.getOriginalFilename());
       file1.transferTo(new File(uploadDir + newFilename));
       BoardFile boardFile = new BoardFile();
@@ -45,7 +45,7 @@ public class DefaultBoardService implements BoardService {
       boardFileDao.insert(boardFile);
     }
     
-    if (!file2.isEmpty()) {
+    if (file2 != null && !file2.isEmpty()) {
       newFilename = FileUploadUtil.getNewFilename(file2.getOriginalFilename());
       file2.transferTo(new File(uploadDir + newFilename));
       BoardFile boardFile = new BoardFile();
@@ -57,6 +57,23 @@ public class DefaultBoardService implements BoardService {
   
   public Board getBoard(int no) throws Exception {
     return boardDao.selectOne(no);
+  }
+  
+  public Board getBoard(int no, String password) throws Exception {
+    HashMap<String,Object> paramMap = new HashMap<>();
+    paramMap.put("no", no);
+    paramMap.put("password", password);
+    return boardDao.selectOneByPassword(paramMap);
+  }
+  
+  @Override
+  public int getTotalPage(int pageSize) throws Exception {
+    int countAll = boardDao.countAll();
+    int totalPage = countAll / pageSize;
+    if ((countAll % pageSize) > 0) {
+      totalPage++;
+    }
+    return totalPage;
   }
   
   public void updateBoard(Board board) throws Exception {

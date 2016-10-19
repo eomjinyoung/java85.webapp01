@@ -378,6 +378,10 @@ compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.2
                      pointcut-ref="serviceOperationPointCut"/>
     </aop:config>     
 
+# step42 (게시판 목록 화면에 페이징 기능 추가)
+- BoardController.java, BoardService.java, DefaultBoardService.java, 
+  BoardDao.java, BoardMapper.xml 변경
+- boardApp.html, boardApp.js 변경
 
 
 
